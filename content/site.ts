@@ -34,13 +34,13 @@ export const MEDIA = {
   },
   fieldNote: {
     kind: 'image',
-    src: 'media/289CD059-D33F-4CA6-995B-44324402CC02_1_201_a.jpg',
+    src: '/media/289CD059-D33F-4CA6-995B-44324402CC02_1_201_a.jpg',
     alt: 'A scene photographed by Matthew Roxas',
     caption: 'Something you noticed and wanted to keep looking at.',
   },
   motionStudy: {
     kind: 'video',
-    src: '/media/IMG_0095.mov',
+    src: '/media/IMG_0095.mp4',
     poster: '/media/2BA4FD45-7B16-4F39-861A-14A2DB32302A_1_105_c.jpeg',
     alt: 'A short video recorded by Matthew Roxas',
     caption: 'A short film, process clip, or moving field note.',
