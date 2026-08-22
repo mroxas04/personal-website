@@ -1,4 +1,8 @@
 import ContactForm from './components/contact-form';
+import MediaSlot from './components/media-slot';
+import Link from 'next/link';
+import { MEDIA, SITE_URL, SOCIAL_LINKS } from '../content/site';
+import { WRITING } from '../content/writing';
 
 const intersections = [
   {
@@ -87,61 +91,61 @@ const timeline = [
   },
 ];
 
-const socials = [
-  {
-    name: 'LinkedIn',
-    handle: '/in/matthew-roxas',
-    href: 'https://www.linkedin.com/in/matthew-roxas',
-  },
-  {
-    name: 'GitHub',
-    handle: '@mroxas04',
-    href: 'https://github.com/mroxas04',
-  },
-  {
-    name: 'Email',
-    handle: 'matthewgroxas@gmail.com',
-    href: 'mailto:matthewgroxas@gmail.com',
-  },
-  {
-    name: 'Instagram',
-    handle: '@roxas.matthew',
-    href: 'https://www.instagram.com/roxas.matthew/',
-  },
-  {
-    name: 'BeReal',
-    handle: '@mroxas042',
-    href: 'https://bere.al/mroxas042',
-  },
-  {
-    name: 'Beli',
-    handle: '@mroxas',
-    href: 'https://beliapp.co/app/mroxas',
-  },
-  {
-    name: 'Roxasisms',
-    handle: '@roxasisms',
-    href: 'https://www.instagram.com/roxasisms/',
-  },
-  {
-    name: 'Duolingo',
-    handle: '@MatthewRox5',
-    href: 'https://invite.duolingo.com/profile-share/MatthewRox5',
-  },
-];
-
 export default function Home() {
+  const featuredWriting = WRITING[0];
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: 'Matthew Roxas',
+        description: 'Systems, AI, philosophy, and the work between them.',
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'ProfilePage',
+        '@id': `${SITE_URL}/#profile`,
+        url: SITE_URL,
+        name: 'Matthew Roxas — Systems, AI & Philosophy',
+        mainEntity: {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#person`,
+          name: 'Matthew Roxas',
+          url: SITE_URL,
+          homeLocation: { '@type': 'City', name: 'Indianapolis' },
+          jobTitle: 'Marketing Operations Specialist',
+          alumniOf: { '@type': 'CollegeOrUniversity', name: 'Purdue University' },
+          knowsAbout: [
+            'Artificial intelligence',
+            'Computer engineering',
+            'Embodied cognition',
+            'Marketing operations',
+            'Philosophy of technology',
+          ],
+          sameAs: SOCIAL_LINKS.filter(([name]) => name !== 'Email').map(([, , href]) => href),
+        },
+      },
+    ],
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Matthew Roxas, home">
+        <Link className="wordmark" href="/#top" aria-label="Matthew Roxas, home">
           MR<span className="wordmark-dot" aria-hidden="true" />
-        </a>
+        </Link>
         <nav className="primary-nav" aria-label="Primary navigation">
           <a href="#writing">Writing</a>
           <a href="#work">Work</a>
           <a href="#about">About</a>
           <a href="#elsewhere">Elsewhere</a>
+          <a href="/dashboard">Dashboard</a>
         </nav>
         <a className="contact-link" href="#contact">
           Start a conversation <span aria-hidden="true">↗</span>
@@ -174,9 +178,11 @@ export default function Home() {
 
         <aside className="portrait-card" aria-label="Profile summary">
           <div className="portrait-frame">
-            <img
-              src="https://avatars.githubusercontent.com/u/112834121?v=4"
-              alt="Matthew Roxas"
+            <MediaSlot
+              slot={MEDIA.heroPortrait}
+              variableName="MEDIA.heroPortrait"
+              className="portrait-media"
+              priority
             />
             <span className="portrait-status">Currently curious</span>
           </div>
@@ -226,17 +232,17 @@ export default function Home() {
             <span className="orbit-code">MR / PAPER 01</span>
           </div>
           <div className="essay-copy">
-            <p className="content-meta">Working paper · Philosophy of AI · 2026</p>
-            <h3>Does artificial intelligence truly reason?</h3>
-            <p>
-              Embodiment may give an artificial system a meaningful world to act
-              within. My argument is that reasoning demands something more: the
-              ability to take up a history as one’s own, reinterpret it, and
-              project toward future possibilities.
+            <p className="content-meta">
+              {featuredWriting.status} · {featuredWriting.outlet} · {featuredWriting.year}
             </p>
+            <h3>{featuredWriting.title}</h3>
+            <p>{featuredWriting.description}</p>
             <div className="essay-actions">
               <a className="button button-dark" href="#contact">
                 Ask me about the paper <span aria-hidden="true">↗</span>
+              </a>
+              <a className="text-link" href="/writing">
+                Browse the writing index <span aria-hidden="true">→</span>
               </a>
               <a
                 className="text-link"
@@ -329,9 +335,26 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section media-section" id="field-notes">
+        <div className="section-intro">
+          <p className="section-kicker">03 / Field notes</p>
+          <h2>A life beyond the résumé.</h2>
+          <p>
+            Photographs and motion can hold the texture that a project list cannot.
+            These named slots are ready for the moments you want to share.
+          </p>
+        </div>
+        <div className="media-grid">
+          <MediaSlot slot={MEDIA.studioMoment} variableName="MEDIA.studioMoment" className="media-wide" />
+          <MediaSlot slot={MEDIA.livedMoment} variableName="MEDIA.livedMoment" />
+          <MediaSlot slot={MEDIA.fieldNote} variableName="MEDIA.fieldNote" />
+          <MediaSlot slot={MEDIA.motionStudy} variableName="MEDIA.motionStudy" className="media-wide" />
+        </div>
+      </section>
+
       <section className="section about-section" id="about">
         <div className="section-intro">
-          <p className="section-kicker">03 / About</p>
+          <p className="section-kicker">04 / About</p>
           <h2>A technical life with philosophical stakes.</h2>
         </div>
 
@@ -379,7 +402,7 @@ export default function Home() {
 
       <section className="section elsewhere-section" id="elsewhere">
         <div className="section-intro">
-          <p className="section-kicker">04 / Elsewhere</p>
+          <p className="section-kicker">05 / Elsewhere</p>
           <h2>The other tabs I keep open.</h2>
           <p>
             Professional updates, code, daily life, language streaks, and the
@@ -388,17 +411,17 @@ export default function Home() {
         </div>
 
         <div className="social-board">
-          {socials.map((social, index) => (
+          {SOCIAL_LINKS.map(([name, handle, href], index) => (
             <a
               className="social-link"
-              href={social.href}
-              target={social.href.startsWith('mailto:') ? undefined : '_blank'}
-              rel={social.href.startsWith('mailto:') ? undefined : 'noreferrer'}
-              key={social.name}
+              href={href}
+              target={href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+              key={name}
             >
               <span className="social-index">0{index + 1}</span>
-              <span className="social-name">{social.name}</span>
-              <span className="social-handle">{social.handle}</span>
+              <span className="social-name">{name}</span>
+              <span className="social-handle">{handle}</span>
               <span aria-hidden="true">↗</span>
             </a>
           ))}
@@ -408,7 +431,7 @@ export default function Home() {
 
       <section className="section contact-section" id="contact">
         <div className="contact-heading">
-          <p className="section-kicker">05 / Contact</p>
+          <p className="section-kicker">06 / Contact</p>
           <h2>Bring me the interesting, messy question.</h2>
           <p>
             I’m especially open to conversations about AI and human judgment,

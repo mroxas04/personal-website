@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+import { SITE_URL } from '../content/site';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Matthew Roxas — Systems, AI & Philosophy',
     template: '%s · Matthew Roxas',
@@ -20,6 +19,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Matthew Roxas' }],
   creator: 'Matthew Roxas',
+  publisher: 'Matthew Roxas',
+  alternates: { canonical: '/' },
+  category: 'technology',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
   icons: { icon: '/favicon.png' },
   openGraph: {
     type: 'website',

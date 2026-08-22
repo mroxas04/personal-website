@@ -1,4 +1,5 @@
 import { env } from 'cloudflare:workers';
+import { createContactRequest } from '../../../db/contact-requests';
 
 const allowedReasons = new Set([
   'philosophy-ai',
@@ -7,17 +8,6 @@ const allowedReasons = new Set([
   'teaching',
   'other',
 ]);
-
-const contactTableSql = `CREATE TABLE IF NOT EXISTS contact_requests (
-  id TEXT PRIMARY KEY NOT NULL,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  organization TEXT,
-  reason TEXT NOT NULL,
-  message TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'new',
-  created_at INTEGER NOT NULL
-)`;
 
 function clean(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
@@ -48,24 +38,14 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Please enter a valid email address.' }, { status: 400 });
     }
 
-    const database = env.DB;
-    await database.prepare(contactTableSql).run();
-    await database
-      .prepare(
-        `INSERT INTO contact_requests
-          (id, name, email, organization, reason, message, status, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, 'new', ?)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        name,
-        email,
-        organization || null,
-        reason,
-        message,
-        Date.now(),
-      )
-      .run();
+    if (!env.DB) throw new Error('D1 binding DB is unavailable.');
+    await createContactRequest({
+      name,
+      email,
+      organization: organization || null,
+      reason,
+      message,
+    });
 
     return Response.json({ ok: true }, { status: 201 });
   } catch (error) {
