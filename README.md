@@ -32,7 +32,7 @@ npm run db:generate
 
 ### Photos and video
 
-Put media in `public/media/`, then replace `src: null` in `content/site.ts` with a public path such as `/media/hero-portrait.jpg`.
+Put media in `public/media/`, commit it to GitHub `main`, then update the named slot in `content/site.ts`. The deployed portfolio currently reads media through jsDelivr’s GitHub-backed CDN because the Sites source repository does not accept these binary assets reliably.
 
 Named slots currently include:
 
@@ -42,7 +42,7 @@ Named slots currently include:
 - `MEDIA.fieldNote`
 - `MEDIA.motionStudy` (video; accepts an optional poster)
 
-Until a source is set, the site shows a labeled layout placeholder. Use descriptive `alt` text and compressed WebP/AVIF images where practical; keep video short and provide a poster image.
+Until a source is set, the site shows a labeled layout placeholder. Use descriptive `alt` text and compressed WebP/AVIF images where practical; keep video short, browser-compatible, and provide a poster image. Replacing a file at an existing GitHub path can update after CDN caches expire; changing a filename or slot still requires a Sites deployment.
 
 ### Writing
 

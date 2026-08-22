@@ -15,7 +15,7 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 
 - Reusable site/media/social settings live in `content/site.ts`.
 - All writing entries live in `content/writing.ts`; do not duplicate page-local writing data.
-- Store user-selected media in `public/media/` and reference it through a named `MEDIA.*` slot.
+- Store user-selected media in `public/media/` and reference it through a named `MEDIA.*` slot. The deployed site currently uses a GitHub-backed jsDelivr media base URL; preserve that indirection unless Sites gains reliable binary-source support or media moves to a dedicated first-party CDN/object store.
 - Placeholder media must remain visibly labeled in private previews and must not be emitted as a real image in structured data.
 
 ## Data and privacy
