@@ -34,7 +34,7 @@ export default async function DashboardPage() {
   return (
     <main className="dashboard-shell">
       <header className="site-header dashboard-header">
-        <Link className="wordmark" href="/#top" aria-label="Matthew Roxas, home">MR<span className="wordmark-dot" aria-hidden="true" /></Link>
+        <Link className="wordmark" href="/" aria-label="Matthew Roxas, home">MR<span className="wordmark-dot" aria-hidden="true" /></Link>
         <nav className="primary-nav" aria-label="Dashboard navigation"><Link href="/">Site</Link><Link href="/writing">Writing</Link></nav>
         <a className="private-label" href={chatGPTSignOutPath('/')}>Sign out ↗</a>
       </header>
