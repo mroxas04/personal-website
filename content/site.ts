@@ -58,6 +58,9 @@ export const CONVERSATION_INTERESTS = [
   'philosophy of technology',
   'technical teaching',
   'marketing operations and automation',
+  'basketball',
+  'travel and photography',
+  'merleau-ponty and phenomenology',
 ] as const;
 
 export const SOCIAL_LINKS = [
