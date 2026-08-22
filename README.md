@@ -46,7 +46,7 @@ Until a source is set, the site shows a labeled layout placeholder. Use descript
 
 ### Writing
 
-Edit `WRITING` in `content/writing.ts`. Items are grouped on `/writing` as Publication, Article, Essay, or Note. Set `href` to the canonical public URL when a piece is published; leave it `null` while it is forthcoming or in progress.
+Edit `WRITING` in `content/writing.ts`. Items are grouped as Paper, Article, or Blog and appear on both `/writing` and their category page. Set `href` to the canonical public URL when a piece is published; leave it `null` while it is forthcoming or in progress.
 
 ### Analytics
 

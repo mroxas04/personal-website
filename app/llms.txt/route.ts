@@ -28,9 +28,15 @@ ${CONVERSATION_INTERESTS.map((interest) => `- ${interest}`).join('\n')}
 
 ## Key pages
 
-- Home and portfolio: ${SITE_URL}
+- Home: ${SITE_URL}
+- About: ${SITE_URL}/about
+- Selected work: ${SITE_URL}/work
 - Writing index: ${SITE_URL}/writing
-- Contact: ${SITE_URL}/#contact
+- Papers: ${SITE_URL}/writing/papers
+- Articles: ${SITE_URL}/writing/articles
+- Blog: ${SITE_URL}/writing/blog
+- Elsewhere: ${SITE_URL}/elsewhere
+- Contact: ${SITE_URL}/contact
 
 ## Writing
 

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: '%s · Matthew Roxas',
   },
   description:
-    'Matthew Roxas is a computer engineer, operator, and philosopher of AI working across technical systems, human judgment, and lived experience.',
+    'A portfolio of technical work, operational practice, and philosophical inquiry into AI.',
   keywords: [
     'Matthew Roxas',
     'philosophy of AI',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: 'Matthew Roxas',
     title: 'Matthew Roxas — Systems, AI & Philosophy',
     description:
-      'A computer engineer, operator, and philosopher of AI working across technical systems, human judgment, and lived experience.',
+      'Technical work, operational practice, and philosophical inquiry into AI.',
     images: [
       {
         url: '/og.png',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Matthew Roxas — Systems, AI & Philosophy',
     description:
-      'A computer engineer, operator, and philosopher of AI working across technical systems, human judgment, and lived experience.',
+      'Technical work, operational practice, and philosophical inquiry into AI.',
     images: ['/og.png'],
   },
 };

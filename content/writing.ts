@@ -1,4 +1,4 @@
-export type WritingCategory = 'Publication' | 'Article' | 'Essay' | 'Note';
+export type WritingCategory = 'Paper' | 'Article' | 'Blog';
 
 export type WritingEntry = {
   title: string;
@@ -11,13 +11,13 @@ export type WritingEntry = {
 };
 
 /**
- * This is the single writing index used on both the home page and /writing.
+ * This is the single writing index used across every writing page.
  * Add the public URL when an item goes live; null URLs render as non-clickable.
  */
 export const WRITING: WritingEntry[] = [
   {
     title: 'Does artificial intelligence truly reason?',
-    category: 'Publication',
+    category: 'Paper',
     outlet: 'Independent research · Philosophy of AI',
     year: 2026,
     status: 'Working paper',
@@ -37,7 +37,7 @@ export const WRITING: WritingEntry[] = [
   },
   {
     title: 'Context is not just more information',
-    category: 'Essay',
+    category: 'Blog',
     outlet: 'Ongoing inquiry · AI',
     year: 2026,
     status: 'Ongoing',
@@ -47,7 +47,7 @@ export const WRITING: WritingEntry[] = [
   },
   {
     title: 'Structured, but malleable',
-    category: 'Note',
+    category: 'Blog',
     outlet: 'Field note · Systems',
     year: 2026,
     status: 'Ongoing',
@@ -58,8 +58,29 @@ export const WRITING: WritingEntry[] = [
 ];
 
 export const WRITING_CATEGORIES: WritingCategory[] = [
-  'Publication',
+  'Paper',
   'Article',
-  'Essay',
-  'Note',
+  'Blog',
 ];
+
+export const WRITING_CATEGORY_DETAILS: Record<WritingCategory, {
+  slug: string;
+  plural: string;
+  description: string;
+}> = {
+  Paper: {
+    slug: 'papers',
+    plural: 'Papers',
+    description: 'Formal research and working papers in philosophy of AI.',
+  },
+  Article: {
+    slug: 'articles',
+    plural: 'Articles',
+    description: 'Writing published through fellowships, organizations, and outside outlets.',
+  },
+  Blog: {
+    slug: 'blog',
+    plural: 'Blog',
+    description: 'Essays and shorter notes from ongoing questions and experiments.',
+  },
+};
