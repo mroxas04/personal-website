@@ -7,6 +7,9 @@ export type MediaSlot = {
   objectPosition?: string;
 };
 
+const MEDIA_BASE_URL =
+  'https://cdn.jsdelivr.net/gh/mroxas04/personal-website@main/public/media';
+
 /**
  * Replace `src: null` with a path in /public/media (for example,
  * `/media/hero-portrait.jpg`). The UI automatically swaps the labeled
@@ -15,33 +18,33 @@ export type MediaSlot = {
 export const MEDIA = {
   heroPortrait: {
     kind: 'image',
-    src: '/media/88EC9006-D927-4C9C-9B61-CDBDFC155F40_1_102_o.jpeg',
+    src: `${MEDIA_BASE_URL}/88EC9006-D927-4C9C-9B61-CDBDFC155F40_1_102_o.jpeg`,
     alt: 'Portrait of Matthew Roxas',
     caption: 'A portrait that feels like you—not a headshot by default.',
     objectPosition: '50% 35%',
   },
   studioMoment: {
     kind: 'image',
-    src: '/media/2D859B7F-16E4-469C-AA34-7207933B2078_1_105_c.jpeg',
+    src: `${MEDIA_BASE_URL}/2D859B7F-16E4-469C-AA34-7207933B2078_1_105_c.jpeg`,
     alt: 'Matthew Roxas working on a project',
     caption: 'Building, teaching, or working through a complicated system.',
   },
   livedMoment: {
     kind: 'image',
-    src: '/media/21140066-985E-457A-BC39-A5626BDE2D12_1_102_o.jpeg',
+    src: `${MEDIA_BASE_URL}/21140066-985E-457A-BC39-A5626BDE2D12_1_102_o.jpeg`,
     alt: 'A moment from Matthew Roxas’s life in Indianapolis',
     caption: 'A frame from daily life—people, place, food, or movement.',
   },
   fieldNote: {
     kind: 'image',
-    src: '/media/289CD059-D33F-4CA6-995B-44324402CC02_1_201_a.jpg',
+    src: `${MEDIA_BASE_URL}/289CD059-D33F-4CA6-995B-44324402CC02_1_201_a.jpg`,
     alt: 'A scene photographed by Matthew Roxas',
     caption: 'Something you noticed and wanted to keep looking at.',
   },
   motionStudy: {
     kind: 'video',
-    src: '/media/IMG_0095.mp4',
-    poster: '/media/2BA4FD45-7B16-4F39-861A-14A2DB32302A_1_105_c.jpeg',
+    src: `${MEDIA_BASE_URL}/IMG_0095.mp4`,
+    poster: `${MEDIA_BASE_URL}/2BA4FD45-7B16-4F39-861A-14A2DB32302A_1_105_c.jpeg`,
     alt: 'A short video recorded by Matthew Roxas',
     caption: 'A short film, process clip, or moving field note.',
   },
