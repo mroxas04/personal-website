@@ -21,7 +21,9 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 ## Data and privacy
 
 - Contact requests contain personal information. Do not log, seed, publish, or expose request contents outside the private dashboard.
-- `/dashboard` currently depends on the whole Sites deployment being owner-only. Do not make the site public until server-side route authorization is implemented and verified.
+- The portfolio is public and Sign in with ChatGPT is optional. Preserve dispatch-owned SIWC routes and the generated-style helpers in `app/chatgpt-auth.ts`.
+- `/dashboard` must call `requireChatGPTUser()` and pass the server-only `DASHBOARD_OWNER_EMAIL` allowlist before any D1 read. Fail closed when the owner setting is absent.
+- SIWC exposes a site-scoped user ID, email, and optional full name. Never imply that it exposes ChatGPT files, memories, chats, or interests.
 - `robots` directives are discovery preferences, not authentication.
 - Keep one SQL statement per D1 `prepare()` call. Update `db/schema.ts`, generate a Drizzle migration, inspect it, and verify runtime initialization for schema changes.
 
@@ -30,7 +32,7 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 - Structured data must describe visible, truthful content. Do not mark forthcoming work as published.
 - Keep `/dashboard` out of the sitemap and marked `noindex`.
 - Use semantic headings, descriptive link text, useful alt text, captions for video where available, and keyboard-visible focus states.
-- Do not add speculative “AI SEO” files or hidden text. Prefer crawlable original prose, internal links, accurate metadata, structured data, and a sitemap.
+- Maintain `/llms.txt` as an accurate, privacy-safe summary, while treating crawlable original prose, internal links, accurate metadata, structured data, and the sitemap as the primary discovery surfaces.
 - Compress large media; avoid autoplay video and layout-shifting embeds.
 
 ## Hosting

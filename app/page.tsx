@@ -1,8 +1,11 @@
 import ContactForm from './components/contact-form';
 import MediaSlot from './components/media-slot';
 import Link from 'next/link';
-import { MEDIA, SITE_URL, SOCIAL_LINKS } from '../content/site';
+import { chatGPTSignInPath, chatGPTSignOutPath, getChatGPTUser, isDashboardOwner } from './chatgpt-auth';
+import { CONVERSATION_INTERESTS, MEDIA, SITE_URL, SOCIAL_LINKS } from '../content/site';
 import { WRITING } from '../content/writing';
+
+export const dynamic = 'force-dynamic';
 
 const intersections = [
   {
@@ -91,7 +94,14 @@ const timeline = [
   },
 ];
 
-export default function Home() {
+function formatInterests(interests: readonly string[]) {
+  return new Intl.ListFormat('en-US', { style: 'long', type: 'conjunction' }).format(interests);
+}
+
+export default async function Home() {
+  const user = await getChatGPTUser();
+  const visitorName = user?.displayName ?? null;
+  const showDashboard = isDashboardOwner(user);
   const featuredWriting = WRITING[0];
   const structuredData = {
     '@context': 'https://schema.org',
@@ -145,34 +155,55 @@ export default function Home() {
           <a href="#work">Work</a>
           <a href="#about">About</a>
           <a href="#elsewhere">Elsewhere</a>
-          <a href="/dashboard">Dashboard</a>
+          {showDashboard ? <Link href="/dashboard">Dashboard</Link> : null}
         </nav>
-        <a className="contact-link" href="#contact">
-          Start a conversation <span aria-hidden="true">↗</span>
-        </a>
+        <div className="header-actions">
+          <a className="contact-link" href="#contact">Start a conversation</a>
+          {user ? (
+            <a className="auth-link" href={chatGPTSignOutPath('/')}>
+              Sign out <span aria-hidden="true">↗</span>
+            </a>
+          ) : (
+            <a className="auth-link" href={chatGPTSignInPath('/')}>
+              Sign in with ChatGPT <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
       </header>
 
       <section className="hero" id="top">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span>Matthew Roxas</span>
+            <span>{user ? `Signed in · ${visitorName}` : 'Welcome'}</span>
             <span>Indianapolis, IN</span>
             <span>Est. 2004</span>
           </p>
 
-          <h1>
+          <p className="hero-manifesto">
             Building at the edge of <em>systems</em> and lived experience.
-          </h1>
+          </p>
+
+          <h1>{visitorName ? <>Hi, <em>{visitorName}</em>. I’m Matthew Roxas.</> : <>Hi, I’m <em>Matthew Roxas</em>.</>}</h1>
 
           <div className="hero-intro">
-            <p>
-              I’m a computer engineer, operator, and philosopher of AI. I turn
-              messy information into useful systems, then ask what those systems
-              mean for the people living inside them.
-            </p>
-            <a className="text-link" href="#about">
-              A little more about me <span aria-hidden="true">↓</span>
-            </a>
+            <div className="hero-bio">
+              <p>
+                I’m a computer engineer, operator, and philosopher of AI. I turn
+                messy information into useful systems, then ask what those systems
+                mean for the people living inside them.
+              </p>
+              <a className="text-link" href="#about">A little more about me <span aria-hidden="true">↓</span></a>
+            </div>
+            <aside className="conversation-context" aria-label="Possible conversation topics">
+              <span className="content-meta">A few places we might overlap</span>
+              <p>
+                {user ? (
+                  <>ChatGPT keeps your files and interest profile private from this site. Based on the work I share here, the things we could talk about are {formatInterests(CONVERSATION_INTERESTS)}. Looking forward to starting a conversation with you, {visitorName}!</>
+                ) : (
+                  <>The things we could talk about are {formatInterests(CONVERSATION_INTERESTS)}. Sign in if you’d like a personal hello—your ChatGPT files and interest profile stay private.</>
+                )}
+              </p>
+            </aside>
           </div>
         </div>
 

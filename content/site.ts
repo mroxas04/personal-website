@@ -50,6 +50,16 @@ export const MEDIA = {
 /** Set this when you have GA4, Plausible, or another analytics dashboard. */
 export const ANALYTICS_DASHBOARD_URL: string | null = null;
 
+/** Topics used in the personalized welcome. Edit freely as your interests evolve. */
+export const CONVERSATION_INTERESTS = [
+  'AI and human judgment',
+  'embodied cognition',
+  'systems design',
+  'philosophy of technology',
+  'technical teaching',
+  'marketing operations and automation',
+] as const;
+
 export const SOCIAL_LINKS = [
   ['LinkedIn', '/in/matthew-roxas', 'https://www.linkedin.com/in/matthew-roxas'],
   ['GitHub', '@mroxas04', 'https://github.com/mroxas04'],

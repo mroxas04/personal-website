@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { chatGPTSignOutPath, isDashboardOwner, requireChatGPTUser } from '../chatgpt-auth';
 import { ANALYTICS_DASHBOARD_URL } from '../../content/site';
 import { getContactDashboardData } from '../../db/contact-requests';
 
@@ -17,6 +19,9 @@ const reasonLabels: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
+  const user = await requireChatGPTUser('/dashboard');
+  if (!isDashboardOwner(user)) notFound();
+
   let data: Awaited<ReturnType<typeof getContactDashboardData>> | null = null;
   let databaseError = false;
   try { data = await getContactDashboardData(); } catch (error) {
@@ -31,13 +36,13 @@ export default async function DashboardPage() {
       <header className="site-header dashboard-header">
         <Link className="wordmark" href="/#top" aria-label="Matthew Roxas, home">MR<span className="wordmark-dot" aria-hidden="true" /></Link>
         <nav className="primary-nav" aria-label="Dashboard navigation"><Link href="/">Site</Link><Link href="/writing">Writing</Link></nav>
-        <span className="private-label">Private workspace</span>
+        <a className="private-label" href={chatGPTSignOutPath('/')}>Sign out ↗</a>
       </header>
 
       <section className="dashboard-main">
         <div className="dashboard-title-row">
           <div><p className="section-kicker">Internal / Contact intake</p><h1>Conversation inbox.</h1></div>
-          <div className="privacy-note"><strong>Current gate</strong><span>Protected by the site’s owner-only access.</span><small>Add route-level authentication before making the portfolio public.</small></div>
+          <div className="privacy-note"><strong>Server-protected</strong><span>Signed in as {user.displayName}.</span><small>Only the configured owner account can read this inbox.</small></div>
         </div>
         <div className="dashboard-stats" aria-label="Contact request totals">
           <article><span>Total requests</span><strong>{totals.total}</strong></article>
@@ -48,7 +53,7 @@ export default async function DashboardPage() {
 
         <section className="inbox-section" aria-labelledby="inbox-heading">
           <div className="inbox-heading"><h2 id="inbox-heading">Latest requests</h2><span>Showing up to 100</span></div>
-          {databaseError ? <div className="dashboard-empty"><h3>Database unavailable.</h3><p>The D1 binding could not be read in this environment. The live private deployment will use the configured DB binding.</p></div>
+          {databaseError ? <div className="dashboard-empty"><h3>Database unavailable.</h3><p>The D1 binding could not be read in this environment. The hosted deployment will use the configured DB binding.</p></div>
             : requests.length === 0 ? <div className="dashboard-empty"><h3>The inbox is quiet.</h3><p>New submissions from the contact form will appear here automatically.</p></div>
             : <div className="request-list">{requests.map((request) => <article className="request-card" key={request.id}>
                 <div className="request-meta"><span className={`request-status request-status-${request.status}`}>{request.status}</span><time dateTime={new Date(request.created_at).toISOString()}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(request.created_at)}</time><span>{reasonLabels[request.reason] ?? request.reason}</span></div>

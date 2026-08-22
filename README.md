@@ -1,6 +1,6 @@
 # Matthew Roxas — Personal Website
 
-An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes a categorized writing archive, selected projects, replaceable personal media, a D1-backed contact form, and a private contact-request dashboard.
+An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, a categorized writing archive, selected projects, replaceable personal media, a D1-backed contact form, and an owner-only contact-request dashboard.
 
 ## Stack
 
@@ -16,6 +16,7 @@ Requires Node.js 22.13 or newer.
 
 ```bash
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
@@ -55,7 +56,9 @@ Set `ANALYTICS_DASHBOARD_URL` in `content/site.ts` after GA4, Plausible, or anot
 
 `POST /api/contact` validates and stores requests in the D1 `contact_requests` table. `/dashboard` reads the latest 100 requests and basic totals.
 
-The dashboard currently relies on the entire Sites deployment being owner-only. **Before the portfolio is made public, add server-side, route-level authorization to `/dashboard`; `robots: noindex` is not access control.**
+The portfolio is public and Sign in with ChatGPT is optional. The hosting dispatcher owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, and `/callback`; do not create application routes for them. Signed-in identity is read on the server through `app/chatgpt-auth.ts`.
+
+`/dashboard` requires ChatGPT sign-in and then compares the authenticated email against the server-only `DASHBOARD_OWNER_EMAIL` allowlist before reading D1. Keep that environment value configured in Sites. `robots: noindex` remains defense-in-depth, not access control.
 
 The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes belong in `db/schema.ts`; generate and inspect a migration before deployment.
 
@@ -66,10 +69,11 @@ The site provides:
 - canonical metadata, Open Graph, and social preview data
 - `WebSite`, `ProfilePage`, `Person`, `CollectionPage`, and `ItemList` structured data
 - `/robots.txt` and `/sitemap.xml`
+- `/llms.txt`, an optional plain-text summary for assistants and curious humans
 - unique writing-page metadata and semantic headings
 - a noindex dashboard excluded from the sitemap
 
-Search crawlers cannot index an owner-only deployment. These controls become effective once the public portfolio or a custom domain is intentionally opened.
+`llms.txt` is maintained as a clear summary, not as a replacement for crawlable content or structured data.
 
 ## Deployment
 
