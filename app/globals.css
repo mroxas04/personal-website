@@ -149,12 +149,21 @@ section[id] {
 }
 
 .contact-link,
-.auth-link {
+.auth-link,
+.header-user {
   font-family: var(--mono);
   font-size: 0.61rem;
   font-weight: 750;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.header-user {
+  max-width: 16ch;
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .contact-link {
@@ -1586,6 +1595,10 @@ a.writing-entry:hover {
 
 @media (max-width: 1200px) {
   .header-actions .contact-link {
+    display: none;
+  }
+
+  .header-user {
     display: none;
   }
 }

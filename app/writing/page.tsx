@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { chatGPTSignInPath, chatGPTSignOutPath, getChatGPTUser, isDashboardOwner } from '../chatgpt-auth';
 import { SITE_URL } from '../../content/site';
 import { WRITING, WRITING_CATEGORIES } from '../../content/writing';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Writing',
@@ -10,7 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/writing' },
 };
 
-export default function WritingPage() {
+export default async function WritingPage() {
+  const user = await getChatGPTUser();
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -36,9 +40,16 @@ export default function WritingPage() {
           MR<span className="wordmark-dot" aria-hidden="true" />
         </Link>
         <nav className="primary-nav" aria-label="Primary navigation">
-          <Link href="/#work">Work</Link><Link href="/#about">About</Link><Link href="/#elsewhere">Elsewhere</Link><Link href="/dashboard">Dashboard</Link>
+          <Link href="/#work">Work</Link><Link href="/#about">About</Link><Link href="/#elsewhere">Elsewhere</Link>{isDashboardOwner(user) ? <Link href="/dashboard">Dashboard</Link> : null}
         </nav>
-        <Link className="contact-link" href="/#contact">Start a conversation ↗</Link>
+        <div className="header-actions">
+          <Link className="contact-link" href="/#contact">Start a conversation</Link>
+          {user ? (
+            <><span className="header-user">{user.displayName}</span><a className="auth-link" href={chatGPTSignOutPath('/writing')}>Sign out ↗</a></>
+          ) : (
+            <a className="auth-link" href={chatGPTSignInPath('/writing')}>Sign in with ChatGPT ↗</a>
+          )}
+        </div>
       </header>
 
       <section className="page-hero writing-page-hero">
