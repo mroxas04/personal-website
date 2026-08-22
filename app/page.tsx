@@ -103,9 +103,32 @@ const socials = [
     handle: 'matthewgroxas@gmail.com',
     href: 'mailto:matthewgroxas@gmail.com',
   },
+  {
+    name: 'Instagram',
+    handle: '@roxas.matthew',
+    href: 'https://www.instagram.com/roxas.matthew/',
+  },
+  {
+    name: 'BeReal',
+    handle: '@mroxas042',
+    href: 'https://bere.al/mroxas042',
+  },
+  {
+    name: 'Beli',
+    handle: '@mroxas',
+    href: 'https://beliapp.co/app/mroxas',
+  },
+  {
+    name: 'Roxasisms',
+    handle: '@roxasisms',
+    href: 'https://www.instagram.com/roxasisms/',
+  },
+  {
+    name: 'Duolingo',
+    handle: '@MatthewRox5',
+    href: 'https://invite.duolingo.com/profile-share/MatthewRox5',
+  },
 ];
-
-const pendingSocials = ['Instagram', 'BeReal', 'Belly', 'Ruxisms', 'Duolingo'];
 
 export default function Home() {
   return (
@@ -380,14 +403,6 @@ export default function Home() {
             </a>
           ))}
 
-          {pendingSocials.map((social, index) => (
-            <div className="social-link social-link-pending" key={social}>
-              <span className="social-index">0{index + socials.length + 1}</span>
-              <span className="social-name">{social}</span>
-              <span className="social-handle">URL needed</span>
-              <span aria-hidden="true">·</span>
-            </div>
-          ))}
         </div>
       </section>
 
