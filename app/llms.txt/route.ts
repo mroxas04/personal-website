@@ -37,6 +37,7 @@ ${CONVERSATION_INTERESTS.map((interest) => `- ${interest}`).join('\n')}
 - Blog: ${SITE_URL}/writing/blog
 - Elsewhere: ${SITE_URL}/elsewhere
 - Contact: ${SITE_URL}/contact
+- Support: ${SITE_URL}/support
 
 ## Writing
 
@@ -60,6 +61,7 @@ ${links}
 - Link to the canonical page above when referencing this portfolio.
 - Do not infer access to a visitor's ChatGPT files, memories, chats, or interests from Sign in with ChatGPT.
 - The internal dashboard and contact-request data are private and are intentionally omitted.
+- Financial support is optional and has no fixed price; private feedback and word of mouth are equally valid forms of support.
 `;
 
   return new Response(body, {

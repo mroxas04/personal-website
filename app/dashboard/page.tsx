@@ -3,9 +3,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import DashboardInbox from '../components/dashboard-inbox';
+import SupportDashboard from '../components/support-dashboard';
 import { chatGPTSignOutPath, isDashboardOwner, requireChatGPTUser } from '../chatgpt-auth';
 import { ANALYTICS_DASHBOARD_URL } from '../../content/site';
 import { getContactDashboardData } from '../../db/contact-requests';
+import { getSupportDashboardData } from '../../db/support';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +37,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   }
   const requests = data?.requests ?? [];
   const totals = data?.totals ?? { total: 0, unread: 0, lastSevenDays: 0 };
+  let supportData: Awaited<ReturnType<typeof getSupportDashboardData>> | null = null;
+  let supportDatabaseError = false;
+  try { supportData = await getSupportDashboardData(); } catch (error) {
+    supportDatabaseError = true;
+    console.error('Dashboard support read failed', error);
+  }
 
   return (
     <main className="dashboard-shell">
@@ -63,6 +71,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             initialEmail={initialEmail}
             databaseError={databaseError}
           />
+        </section>
+
+        <section className="inbox-section support-dashboard-section" aria-labelledby="support-dashboard-heading">
+          <div className="inbox-heading"><h2 id="support-dashboard-heading">Support & evidence</h2><span>Internal ledger and consent review</span></div>
+          <SupportDashboard initialData={supportData} databaseError={supportDatabaseError} />
         </section>
       </section>
     </main>
