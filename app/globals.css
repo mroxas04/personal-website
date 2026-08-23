@@ -1158,6 +1158,12 @@ a.social-link:hover .social-handle {
   text-transform: uppercase;
 }
 
+.contact-form label > span small {
+  margin-left: 0.45rem;
+  color: var(--muted);
+  font-size: 0.52rem;
+}
+
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
@@ -1687,6 +1693,33 @@ a.writing-entry:hover {
   color: var(--muted);
   font-size: 0.8rem;
   line-height: 1.65;
+}
+
+.request-attribution {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.7rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  flex-direction: column;
+}
+
+.request-attribution > span,
+.request-attribution small {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.request-attribution strong {
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .request-card > p {

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import MediaSlot from './components/media-slot';
 import SiteFooter from './components/site-footer';
 import SiteHeader from './components/site-header';
@@ -71,7 +70,7 @@ export default async function Home() {
           <div className="hero-intro">
             <div className="hero-bio">
               <p>I’m a computer engineer, operator, and philosopher of AI. I turn messy information into useful systems, then ask what those systems mean for the people living inside them.</p>
-              <Link className="text-link" href="/about">A little more about me <span aria-hidden="true">→</span></Link>
+              <a className="text-link" href="/about">A little more about me <span aria-hidden="true">→</span></a>
             </div>
             <aside className="conversation-context" aria-label="Possible conversation topics">
               <span className="content-meta">A few places we might overlap</span>
@@ -104,9 +103,9 @@ export default async function Home() {
         <div className="section-intro"><p className="section-kicker">Explore</p><h2 id="explore-heading">Choose a direction.</h2><p>Start with the kind of work or thinking you want to see.</p></div>
         <div className="route-grid">
           {pageLinks.map((item) => (
-            <Link className="route-card" href={item.href} key={item.href}>
+            <a className="route-card" href={item.href} key={item.href}>
               <span className="route-index">{item.index}</span><h3>{item.title}</h3><p>{item.detail}</p><span aria-hidden="true">→</span>
-            </Link>
+            </a>
           ))}
         </div>
       </section>
