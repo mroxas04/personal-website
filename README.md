@@ -1,6 +1,6 @@
 # Matthew Roxas — Personal Website
 
-An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, a categorized writing archive, selected projects, replaceable personal media, a D1-backed contact form, and an owner-only contact-request dashboard.
+An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, separate Work, About, Elsewhere, Contact, and Writing pages, replaceable personal media, a D1-backed contact form, and an owner-only contact-request dashboard.
 
 ## Stack
 
@@ -36,6 +36,13 @@ Put media in `public/media/`, commit it to GitHub `main`, then update the named 
 
 Named slots currently include:
 
+- `MEDIA.workHero`
+- `MEDIA.aboutHero`
+- `MEDIA.elsewhereHero`
+- `MEDIA.writingHero`
+- `MEDIA.papersHero`
+- `MEDIA.articlesHero`
+- `MEDIA.blogHero`
 - `MEDIA.heroPortrait`
 - `MEDIA.studioMoment`
 - `MEDIA.livedMoment`
@@ -46,7 +53,7 @@ Until a source is set, the site shows a labeled layout placeholder. Use descript
 
 ### Writing
 
-Edit `WRITING` in `content/writing.ts`. Items are grouped as Paper, Article, or Blog and appear on both `/writing` and their category page. Set `href` to the canonical public URL when a piece is published; leave it `null` while it is forthcoming or in progress.
+Edit `WRITING` in `content/writing.ts`. Items are grouped as Paper, Article, or Blog and appear on `/writing` plus `/writing/papers`, `/writing/articles`, or `/writing/blog`. The site header exposes those category pages through the Writing dropdown. Set `href` to the canonical public URL when a piece is published; leave it `null` while it is forthcoming or in progress.
 
 ### Analytics
 
@@ -54,7 +61,7 @@ Set `ANALYTICS_DASHBOARD_URL` in `content/site.ts` after GA4, Plausible, or anot
 
 ## Contact requests and dashboard
 
-`POST /api/contact` validates and stores requests in the D1 `contact_requests` table. `/dashboard` reads the latest 100 requests and basic totals.
+`POST /api/contact` validates and stores requests in the D1 `contact_requests` table. `/dashboard` reads up to 100 matching requests and basic totals. The owner can search names, emails, organizations, messages, and reasons; filter by status; and mark requests as New, Contacted, Follow up, Closed, or Ignore. Repeat-email flags link to a history view containing that address’s previous requests.
 
 The site also captures first-touch attribution for the current browser session. Tagged links may use `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, and `utm_term`; the contact form sends those values, the original landing path, and a query-free referrer to the private dashboard. Use fixed campaign labels rather than names, email addresses, or other personal information in UTM values.
 
@@ -66,7 +73,7 @@ https://portfolio.mroxas.chatgpt.site/?utm_source=linkedin&utm_medium=social&utm
 
 The portfolio is public and Sign in with ChatGPT is optional. The hosting dispatcher owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, and `/callback`; do not create application routes for them. Signed-in identity is read on the server through `app/chatgpt-auth.ts`.
 
-`/dashboard` requires ChatGPT sign-in and then compares the authenticated email against the server-only `DASHBOARD_OWNER_EMAIL` allowlist before reading D1. Keep that environment value configured in Sites. `robots: noindex` remains defense-in-depth, not access control.
+`/dashboard` and its search/status API require ChatGPT sign-in and compare the authenticated email against the server-only `DASHBOARD_OWNER_EMAIL` allowlist before reading or changing D1. Keep that environment value configured in Sites. `robots: noindex` remains defense-in-depth, not access control. The canonical workflow statuses live in `app/contact-request-status.ts`.
 
 The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes belong in `db/schema.ts`; generate and inspect a migration before deployment.
 

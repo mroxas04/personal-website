@@ -15,14 +15,18 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 
 - Reusable site/media/social settings live in `content/site.ts`.
 - All writing entries live in `content/writing.ts`; do not duplicate page-local writing data.
+- The primary content routes are `/work`, `/about`, `/elsewhere`, `/contact`, `/writing`, and the Paper, Article, and Blog sub-pages under `/writing/*`. Preserve the Writing dropdown and real-page navigation architecture.
+- Internal navigation intentionally uses normal `<a>` elements because the current Vinext beta’s `next/link` client interceptor breaks ordinary clicks. Do not reintroduce `next/link` without verifying normal left-click navigation in the deployed runtime.
 - Store user-selected media in `public/media/` and reference it through a named `MEDIA.*` slot. The deployed site currently uses a GitHub-backed jsDelivr media base URL; preserve that indirection unless Sites gains reliable binary-source support or media moves to a dedicated first-party CDN/object store.
-- Placeholder media must remain visibly labeled in private previews and must not be emitted as a real image in structured data.
+- Title-page placeholders use `MEDIA.workHero`, `MEDIA.aboutHero`, `MEDIA.elsewhereHero`, `MEDIA.writingHero`, `MEDIA.papersHero`, `MEDIA.articlesHero`, and `MEDIA.blogHero`. Keep placeholders visibly labeled until Matthew supplies media, and never emit a placeholder as a real image in structured data.
 
 ## Data and privacy
 
 - Contact requests contain personal information. Do not log, seed, publish, or expose request contents outside the private dashboard.
 - The portfolio is public and Sign in with ChatGPT is optional. Preserve dispatch-owned SIWC routes and the generated-style helpers in `app/chatgpt-auth.ts`.
-- `/dashboard` must call `requireChatGPTUser()` and pass the server-only `DASHBOARD_OWNER_EMAIL` allowlist before any D1 read. Fail closed when the owner setting is absent.
+- `/dashboard` must call `requireChatGPTUser()` and pass the server-only `DASHBOARD_OWNER_EMAIL` allowlist before any D1 read. Dashboard APIs must call `getChatGPTUser()` and pass the same owner check before reads or mutations. Fail closed when the owner setting is absent.
+- Request workflow statuses are defined centrally in `app/contact-request-status.ts`. Search and status mutations belong behind the protected dashboard API; repeat-contact history is keyed by normalized email and must remain owner-only.
+- Preserve first-touch UTM, query-free referrer, landing-page, and optional self-reported discovery attribution. Do not place personal information in UTM values.
 - SIWC exposes a site-scoped user ID, email, and optional full name. Never imply that it exposes ChatGPT files, memories, chats, or interests.
 - `robots` directives are discovery preferences, not authentication.
 - Keep one SQL statement per D1 `prepare()` call. Update `db/schema.ts`, generate a Drizzle migration, inspect it, and verify runtime initialization for schema changes.
