@@ -1,6 +1,6 @@
 # Matthew Roxas — Personal Website
 
-An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, separate Work, About, Elsewhere, Contact, and Writing pages, replaceable personal media, a D1-backed contact form, and an owner-only contact-request dashboard.
+An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, separate Work, About, Elsewhere, Contact, Support, Feedback, and Writing pages, replaceable personal media, D1-backed forms, and an owner-only operating dashboard.
 
 ## Stack
 
@@ -76,6 +76,14 @@ The portfolio is public and Sign in with ChatGPT is optional. The hosting dispat
 `/dashboard` and its search/status API require ChatGPT sign-in and compare the authenticated email against the server-only `DASHBOARD_OWNER_EMAIL` allowlist before reading or changing D1. Keep that environment value configured in Sites. `robots: noindex` remains defense-in-depth, not access control. The canonical workflow statuses live in `app/contact-request-status.ts`.
 
 The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes belong in `db/schema.ts`; generate and inspect a migration before deployment.
+
+## Support, feedback, and testimonials
+
+`/support` presents a pay-what-you-can model without treating payment as required or charitable. Verified Venmo business and Zelle details are configured through `SUPPORT_PAYMENT` in `content/site.ts`. Keep financial options hidden until business-ready details are supplied; do not publish a private phone number or personal payment identifier.
+
+`/feedback` collects private post-conversation feedback, rating, referral intent, follow-up permission, and an optional testimonial. Testimonial permission is explicit and separate: private only, anonymous quotation, or named quotation. Nothing is published automatically, and `/feedback` remains `noindex` and outside the sitemap.
+
+The owner-only dashboard contains a manual support ledger, an internal leaderboard, and testimonial review statuses. Monetary support is stored in cents; non-monetary support uses a private 1–5 impact judgment. Do not present those points as an objective public ranking or combine them with payment amounts in public-facing claims.
 
 ## SEO and AI discovery
 

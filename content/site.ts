@@ -95,6 +95,20 @@ export const MEDIA = {
 /** Set this when you have GA4, Plausible, or another analytics dashboard. */
 export const ANALYTICS_DASHBOARD_URL: string | null = null;
 
+/**
+ * Add verified business-payment details only after the relevant account is ready.
+ * Do not place a personal phone number or private email address here.
+ */
+export const SUPPORT_PAYMENT: {
+  venmoBusinessUrl: string | null;
+  zelleQrImage: string | null;
+  zelleDisplayName: string | null;
+} = {
+  venmoBusinessUrl: null,
+  zelleQrImage: null,
+  zelleDisplayName: null,
+};
+
 /** Topics used in the personalized welcome. Edit freely as your interests evolve. */
 export const CONVERSATION_INTERESTS = [
   'AI and human judgment',
