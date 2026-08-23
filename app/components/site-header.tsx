@@ -1,4 +1,5 @@
-import Link from 'next/link';
+/* eslint-disable @next/next/no-html-link-for-pages -- Vinext beta navigation interception breaks normal clicks. */
+
 import { WRITING_CATEGORIES, WRITING_CATEGORY_DETAILS } from '../../content/writing';
 import {
   chatGPTSignInPath,
@@ -23,28 +24,28 @@ export default async function SiteHeader({ returnTo = '/' }: SiteHeaderProps) {
 
   return (
     <header className="site-header">
-      <Link className="wordmark" href="/" aria-label="Matthew Roxas, home">
+      <a className="wordmark" href="/" aria-label="Matthew Roxas, home">
         MR<span className="wordmark-dot" aria-hidden="true" />
-      </Link>
+      </a>
 
       <nav className="primary-nav" aria-label="Primary navigation">
         <details className="nav-dropdown">
           <summary>Writing <span aria-hidden="true">⌄</span></summary>
           <div className="nav-dropdown-menu">
-            <Link href="/writing">All writing</Link>
+            <a href="/writing">All writing</a>
             {WRITING_CATEGORIES.map((category) => (
-              <Link href={`/writing/${WRITING_CATEGORY_DETAILS[category].slug}`} key={category}>
+              <a href={`/writing/${WRITING_CATEGORY_DETAILS[category].slug}`} key={category}>
                 {WRITING_CATEGORY_DETAILS[category].plural}
-              </Link>
+              </a>
             ))}
           </div>
         </details>
-        {mainLinks.map(([label, href]) => <Link href={href} key={href}>{label}</Link>)}
-        {showDashboard ? <Link href="/dashboard">Dashboard</Link> : null}
+        {mainLinks.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
+        {showDashboard ? <a href="/dashboard">Dashboard</a> : null}
       </nav>
 
       <div className="header-actions">
-        <Link className="contact-link" href="/contact">Start a conversation</Link>
+        <a className="contact-link" href="/contact">Start a conversation</a>
         {user ? (
           <a className="auth-link" href={chatGPTSignOutPath(returnTo)}>
             Sign out <span aria-hidden="true">↗</span>
@@ -61,17 +62,17 @@ export default async function SiteHeader({ returnTo = '/' }: SiteHeaderProps) {
       <details className="mobile-menu">
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
-          <Link href="/writing">Writing</Link>
+          <a href="/writing">Writing</a>
           <div className="mobile-subnav">
             {WRITING_CATEGORIES.map((category) => (
-              <Link href={`/writing/${WRITING_CATEGORY_DETAILS[category].slug}`} key={category}>
+              <a href={`/writing/${WRITING_CATEGORY_DETAILS[category].slug}`} key={category}>
                 {WRITING_CATEGORY_DETAILS[category].plural}
-              </Link>
+              </a>
             ))}
           </div>
-          {mainLinks.map(([label, href]) => <Link href={href} key={href}>{label}</Link>)}
-          <Link href="/contact">Contact</Link>
-          {showDashboard ? <Link href="/dashboard">Dashboard</Link> : null}
+          {mainLinks.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
+          <a href="/contact">Contact</a>
+          {showDashboard ? <a href="/dashboard">Dashboard</a> : null}
         </nav>
       </details>
     </header>

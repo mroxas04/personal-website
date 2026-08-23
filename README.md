@@ -56,6 +56,14 @@ Set `ANALYTICS_DASHBOARD_URL` in `content/site.ts` after GA4, Plausible, or anot
 
 `POST /api/contact` validates and stores requests in the D1 `contact_requests` table. `/dashboard` reads the latest 100 requests and basic totals.
 
+The site also captures first-touch attribution for the current browser session. Tagged links may use `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, and `utm_term`; the contact form sends those values, the original landing path, and a query-free referrer to the private dashboard. Use fixed campaign labels rather than names, email addresses, or other personal information in UTM values.
+
+Example tagged URL:
+
+```text
+https://portfolio.mroxas.chatgpt.site/?utm_source=linkedin&utm_medium=social&utm_campaign=profile
+```
+
 The portfolio is public and Sign in with ChatGPT is optional. The hosting dispatcher owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, and `/callback`; do not create application routes for them. Signed-in identity is read on the server through `app/chatgpt-auth.ts`.
 
 `/dashboard` requires ChatGPT sign-in and then compares the authenticated email against the server-only `DASHBOARD_OWNER_EMAIL` allowlist before reading D1. Keep that environment value configured in Sites. `robots: noindex` remains defense-in-depth, not access control.

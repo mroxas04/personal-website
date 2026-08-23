@@ -7,6 +7,14 @@ export type ContactRequestRecord = {
   organization: string | null;
   reason: string;
   message: string;
+  heard_about: string | null;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  landing_path: string | null;
+  referrer: string | null;
   status: string;
   created_at: number;
 };
@@ -18,6 +26,14 @@ const createTableSql = `CREATE TABLE IF NOT EXISTS contact_requests (
   organization TEXT,
   reason TEXT NOT NULL,
   message TEXT NOT NULL,
+  heard_about TEXT,
+  utm_source TEXT,
+  utm_medium TEXT,
+  utm_campaign TEXT,
+  utm_content TEXT,
+  utm_term TEXT,
+  landing_path TEXT,
+  referrer TEXT,
   status TEXT NOT NULL DEFAULT 'new',
   created_at INTEGER NOT NULL
 )`;
@@ -39,8 +55,10 @@ export async function createContactRequest(input: Omit<ContactRequestRecord, 'id
   await database
     .prepare(
       `INSERT INTO contact_requests
-        (id, name, email, organization, reason, message, status, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, 'new', ?)`,
+        (id, name, email, organization, reason, message, heard_about, utm_source,
+         utm_medium, utm_campaign, utm_content, utm_term, landing_path, referrer,
+         status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?)`,
     )
     .bind(
       crypto.randomUUID(),
@@ -49,6 +67,14 @@ export async function createContactRequest(input: Omit<ContactRequestRecord, 'id
       input.organization,
       input.reason,
       input.message,
+      input.heard_about,
+      input.utm_source,
+      input.utm_medium,
+      input.utm_campaign,
+      input.utm_content,
+      input.utm_term,
+      input.landing_path,
+      input.referrer,
       Date.now(),
     )
     .run();
@@ -59,7 +85,9 @@ export async function getContactDashboardData() {
   const [requestsResult, totalsResult] = await Promise.all([
     database
       .prepare(
-        `SELECT id, name, email, organization, reason, message, status, created_at
+        `SELECT id, name, email, organization, reason, message, heard_about,
+                utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+                landing_path, referrer, status, created_at
          FROM contact_requests
          ORDER BY created_at DESC
          LIMIT 100`,

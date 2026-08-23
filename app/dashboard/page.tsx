@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Vinext beta navigation interception breaks normal clicks. */
+
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { chatGPTSignOutPath, isDashboardOwner, requireChatGPTUser } from '../chatgpt-auth';
 import { ANALYTICS_DASHBOARD_URL } from '../../content/site';
-import { getContactDashboardData } from '../../db/contact-requests';
+import { getContactDashboardData, type ContactRequestRecord } from '../../db/contact-requests';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +18,27 @@ const reasonLabels: Record<string, string> = {
   'philosophy-ai': 'Philosophy / AI', consulting: 'Consulting', technical: 'Technical',
   teaching: 'Speaking / teaching', other: 'Other',
 };
+
+const heardAboutLabels: Record<string, string> = {
+  linkedin: 'LinkedIn',
+  search: 'Search engine',
+  'friend-colleague': 'Friend or colleague',
+  'orr-fellowship': 'Orr Fellowship',
+  'valve-meter': 'Valve+Meter or work',
+  purdue: 'Purdue or school',
+  'event-talk': 'Event or talk',
+  other: 'Somewhere else',
+};
+
+function automaticSource(request: ContactRequestRecord) {
+  const campaign = [request.utm_source, request.utm_medium, request.utm_campaign]
+    .filter(Boolean)
+    .join(' / ');
+
+  if (campaign) return campaign;
+  if (request.referrer) return request.referrer;
+  return 'Direct / untagged';
+}
 
 export default async function DashboardPage() {
   const user = await requireChatGPTUser('/dashboard');
@@ -34,8 +56,8 @@ export default async function DashboardPage() {
   return (
     <main className="dashboard-shell">
       <header className="site-header dashboard-header">
-        <Link className="wordmark" href="/" aria-label="Matthew Roxas, home">MR<span className="wordmark-dot" aria-hidden="true" /></Link>
-        <nav className="primary-nav" aria-label="Dashboard navigation"><Link href="/">Site</Link><Link href="/writing">Writing</Link></nav>
+        <a className="wordmark" href="/" aria-label="Matthew Roxas, home">MR<span className="wordmark-dot" aria-hidden="true" /></a>
+        <nav className="primary-nav" aria-label="Dashboard navigation"><a href="/">Site</a><a href="/writing">Writing</a></nav>
         <a className="private-label" href={chatGPTSignOutPath('/')}>Sign out ↗</a>
       </header>
 
@@ -57,7 +79,16 @@ export default async function DashboardPage() {
             : requests.length === 0 ? <div className="dashboard-empty"><h3>The inbox is quiet.</h3><p>New submissions from the contact form will appear here automatically.</p></div>
             : <div className="request-list">{requests.map((request) => <article className="request-card" key={request.id}>
                 <div className="request-meta"><span className={`request-status request-status-${request.status}`}>{request.status}</span><time dateTime={new Date(request.created_at).toISOString()}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(request.created_at)}</time><span>{reasonLabels[request.reason] ?? request.reason}</span></div>
-                <div className="request-sender"><h3>{request.name}</h3><a href={`mailto:${request.email}`}>{request.email}</a>{request.organization ? <span>{request.organization}</span> : null}</div><p>{request.message}</p>
+                <div className="request-sender">
+                  <h3>{request.name}</h3><a href={`mailto:${request.email}`}>{request.email}</a>{request.organization ? <span>{request.organization}</span> : null}
+                  <div className="request-attribution">
+                    <span>Automatic source</span>
+                    <strong>{automaticSource(request)}</strong>
+                    {request.heard_about ? <small>Self-reported: {heardAboutLabels[request.heard_about] ?? request.heard_about}</small> : null}
+                    {request.landing_path ? <small>Landing page: {request.landing_path}</small> : null}
+                  </div>
+                </div>
+                <p>{request.message}</p>
               </article>)}</div>}
         </section>
       </section>

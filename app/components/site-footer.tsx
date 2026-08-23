@@ -1,4 +1,4 @@
-import Link from 'next/link';
+/* eslint-disable @next/next/no-html-link-for-pages -- Vinext beta navigation interception breaks normal clicks. */
 
 type SiteFooterProps = {
   note?: string;
@@ -7,9 +7,9 @@ type SiteFooterProps = {
 export default function SiteFooter({ note = 'Systems, AI & Philosophy · Indianapolis' }: SiteFooterProps) {
   return (
     <footer className="site-footer">
-      <Link className="footer-mark" href="/">Matthew Roxas<span>.</span></Link>
+      <a className="footer-mark" href="/">Matthew Roxas<span>.</span></a>
       <p>{note}</p>
-      <Link href="/">Home ↑</Link>
+      <a href="/">Home ↑</a>
     </footer>
   );
 }
