@@ -2,9 +2,10 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import DashboardInbox from '../components/dashboard-inbox';
 import { chatGPTSignOutPath, isDashboardOwner, requireChatGPTUser } from '../chatgpt-auth';
 import { ANALYTICS_DASHBOARD_URL } from '../../content/site';
-import { getContactDashboardData, type ContactRequestRecord } from '../../db/contact-requests';
+import { getContactDashboardData } from '../../db/contact-requests';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,39 +15,21 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
-const reasonLabels: Record<string, string> = {
-  'philosophy-ai': 'Philosophy / AI', consulting: 'Consulting', technical: 'Technical',
-  teaching: 'Speaking / teaching', other: 'Other',
+type DashboardPageProps = {
+  searchParams: Promise<{ email?: string | string[] }>;
 };
 
-const heardAboutLabels: Record<string, string> = {
-  linkedin: 'LinkedIn',
-  search: 'Search engine',
-  'friend-colleague': 'Friend or colleague',
-  'orr-fellowship': 'Orr Fellowship',
-  'valve-meter': 'Valve+Meter or work',
-  purdue: 'Purdue or school',
-  'event-talk': 'Event or talk',
-  other: 'Somewhere else',
-};
-
-function automaticSource(request: ContactRequestRecord) {
-  const campaign = [request.utm_source, request.utm_medium, request.utm_campaign]
-    .filter(Boolean)
-    .join(' / ');
-
-  if (campaign) return campaign;
-  if (request.referrer) return request.referrer;
-  return 'Direct / untagged';
-}
-
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const user = await requireChatGPTUser('/dashboard');
   if (!isDashboardOwner(user)) notFound();
+  const params = await searchParams;
+  const initialEmail = typeof params.email === 'string'
+    ? params.email.trim().toLowerCase().slice(0, 180)
+    : '';
 
   let data: Awaited<ReturnType<typeof getContactDashboardData>> | null = null;
   let databaseError = false;
-  try { data = await getContactDashboardData(); } catch (error) {
+  try { data = await getContactDashboardData({ email: initialEmail }); } catch (error) {
     databaseError = true;
     console.error('Dashboard database read failed', error);
   }
@@ -74,22 +57,12 @@ export default async function DashboardPage() {
         </div>
 
         <section className="inbox-section" aria-labelledby="inbox-heading">
-          <div className="inbox-heading"><h2 id="inbox-heading">Latest requests</h2><span>Showing up to 100</span></div>
-          {databaseError ? <div className="dashboard-empty"><h3>Database unavailable.</h3><p>The D1 binding could not be read in this environment. The hosted deployment will use the configured DB binding.</p></div>
-            : requests.length === 0 ? <div className="dashboard-empty"><h3>The inbox is quiet.</h3><p>New submissions from the contact form will appear here automatically.</p></div>
-            : <div className="request-list">{requests.map((request) => <article className="request-card" key={request.id}>
-                <div className="request-meta"><span className={`request-status request-status-${request.status}`}>{request.status}</span><time dateTime={new Date(request.created_at).toISOString()}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(request.created_at)}</time><span>{reasonLabels[request.reason] ?? request.reason}</span></div>
-                <div className="request-sender">
-                  <h3>{request.name}</h3><a href={`mailto:${request.email}`}>{request.email}</a>{request.organization ? <span>{request.organization}</span> : null}
-                  <div className="request-attribution">
-                    <span>Automatic source</span>
-                    <strong>{automaticSource(request)}</strong>
-                    {request.heard_about ? <small>Self-reported: {heardAboutLabels[request.heard_about] ?? request.heard_about}</small> : null}
-                    {request.landing_path ? <small>Landing page: {request.landing_path}</small> : null}
-                  </div>
-                </div>
-                <p>{request.message}</p>
-              </article>)}</div>}
+          <div className="inbox-heading"><h2 id="inbox-heading">Request database</h2><span>Searches up to 100 matches</span></div>
+          <DashboardInbox
+            initialRequests={requests}
+            initialEmail={initialEmail}
+            databaseError={databaseError}
+          />
         </section>
       </section>
     </main>

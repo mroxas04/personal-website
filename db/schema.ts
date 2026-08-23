@@ -20,5 +20,9 @@ export const contactRequests = sqliteTable(
     status: text('status').notNull().default('new'),
     createdAt: integer('created_at').notNull(),
   },
-  (table) => [index('contact_requests_created_at_idx').on(table.createdAt)],
+  (table) => [
+    index('contact_requests_created_at_idx').on(table.createdAt),
+    index('contact_requests_email_created_at_idx').on(table.email, table.createdAt),
+    index('contact_requests_status_created_at_idx').on(table.status, table.createdAt),
+  ],
 );

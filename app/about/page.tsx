@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import MediaSlot from '../components/media-slot';
+import PageHero from '../components/page-hero';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
 import { MEDIA } from '../../content/site';
@@ -23,7 +24,13 @@ export default function AboutPage() {
   return (
     <main>
       <SiteHeader returnTo="/about" />
-      <section className="page-hero"><p className="eyebrow"><span>About</span><span>One path, several disciplines</span></p><h1>A technical life with philosophical stakes.</h1><p>I’m most at home when a problem refuses to stay in one discipline.</p></section>
+      <PageHero
+        eyebrow={['About', 'One path, several disciplines']}
+        title="A technical life with philosophical stakes."
+        description="I’m most at home when a problem refuses to stay in one discipline."
+        media={MEDIA.aboutHero}
+        mediaVariable="MEDIA.aboutHero"
+      />
       <section className="section about-section standalone-section">
         <div className="about-grid">
           <div className="about-statement"><div className="about-columns"><p>My technical background is in computer engineering, AI, data, and software. My day-to-day work now lives in marketing operations, where I connect reporting, automation, process, and people so decisions have somewhere solid to land.</p><p>Philosophy gives that work a horizon. Through Merleau-Ponty and embodied cognition, I’m interested in what intelligence loses when we treat meaning as disembodied information processing. The long game is scholarship and teaching at that intersection.</p></div><div className="principle-card"><span className="principle-mark">*</span><p>Build systems that support judgment without quietly replacing the person whose judgment matters.</p></div></div>

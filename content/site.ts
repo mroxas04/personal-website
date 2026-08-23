@@ -16,6 +16,48 @@ const MEDIA_BASE_URL =
  * placeholder for the real image or video.
  */
 export const MEDIA = {
+  workHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s selected work',
+    caption: 'Replace with a project, process, or working-session image.',
+  },
+  aboutHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s about page',
+    caption: 'Replace with a portrait or a candid image that feels like you.',
+  },
+  elsewhereHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s links and profiles',
+    caption: 'Replace with an image from daily life or the wider internet orbit.',
+  },
+  writingHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s writing archive',
+    caption: 'Replace with a desk, notebook, book, or writing-process image.',
+  },
+  papersHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s academic papers',
+    caption: 'Replace with an image connected to research or academic work.',
+  },
+  articlesHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s published articles',
+    caption: 'Replace with an image connected to your public-facing ideas.',
+  },
+  blogHero: {
+    kind: 'image',
+    src: null,
+    alt: 'Featured image for Matthew Roxas’s blog',
+    caption: 'Replace with an informal field note, snapshot, or observation.',
+  },
   heroPortrait: {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/88EC9006-D927-4C9C-9B61-CDBDFC155F40_1_102_o.jpeg`,

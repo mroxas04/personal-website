@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import PageHero from '../components/page-hero';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
+import { MEDIA } from '../../content/site';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +23,13 @@ export default function WorkPage() {
   return (
     <main>
       <SiteHeader returnTo="/work" />
-      <section className="page-hero"><p className="eyebrow"><span>Selected work</span><span>Systems in practice</span></p><h1>Ideas that became systems.</h1><p>Technical builds, teaching tools, and operating experiments shaped by real constraints and actual people.</p></section>
+      <PageHero
+        eyebrow={['Selected work', 'Systems in practice']}
+        title="Ideas that became systems."
+        description="Technical builds, teaching tools, and operating experiments shaped by real constraints and actual people."
+        media={MEDIA.workHero}
+        mediaVariable="MEDIA.workHero"
+      />
       <section className="section work-section standalone-section">
         <div className="project-list">
           {projects.map((project) => {

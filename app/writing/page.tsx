@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import PageHero from '../components/page-hero';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
 import WritingList from '../components/writing-list';
-import { SITE_URL } from '../../content/site';
+import { MEDIA, SITE_URL } from '../../content/site';
 import { WRITING, WRITING_CATEGORIES } from '../../content/writing';
 
 export const dynamic = 'force-dynamic';
@@ -35,11 +36,14 @@ export default function WritingPage() {
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <SiteHeader returnTo="/writing" />
-      <section className="page-hero writing-page-hero">
-        <p className="eyebrow"><span>Writing</span><span>Papers → Blog</span></p>
-        <h1>Thinking should leave a trail.</h1>
-        <p>Research, outside articles, and shorter pieces organized by form.</p>
-      </section>
+      <PageHero
+        eyebrow={['Writing', 'Papers → Blog']}
+        title="Thinking should leave a trail."
+        description="Research, outside articles, and shorter pieces organized by form."
+        media={MEDIA.writingHero}
+        mediaVariable="MEDIA.writingHero"
+        className="writing-page-hero"
+      />
       <WritingList categories={WRITING_CATEGORIES} />
       <SiteFooter note="Writing · Papers, articles & blog" />
     </main>
