@@ -96,15 +96,20 @@ export const MEDIA = {
 export const ANALYTICS_DASHBOARD_URL: string | null = null;
 
 /**
- * Add verified business-payment details only after the relevant account is ready.
- * Do not place a personal phone number or private email address here.
+ * Public payment identifiers. Matthew explicitly authorized the personal Venmo
+ * handle and Zelle-enrolled phone number below for display on the public site.
+ * Do not add or replace personal identifiers without renewed authorization.
  */
 export const SUPPORT_PAYMENT: {
-  venmoBusinessUrl: string | null;
+  venmoProfileUrl: string | null;
+  venmoHandle: string | null;
+  zellePhone: string | null;
   zelleQrImage: string | null;
   zelleDisplayName: string | null;
 } = {
-  venmoBusinessUrl: null,
+  venmoProfileUrl: 'https://venmo.com/u/Matthew-Rojas-1',
+  venmoHandle: '@Matthew-Rojas-1',
+  zellePhone: '765-409-4521',
   zelleQrImage: null,
   zelleDisplayName: null,
 };
