@@ -1606,6 +1606,21 @@ a.social-link:hover .social-handle {
   border: 1px solid var(--ink);
 }
 
+.payment-card .payment-identifier {
+  margin: 0 0 1.25rem;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.payment-card .payment-safety-note {
+  margin: 1rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
 .payment-card .button {
   margin-top: auto;
 }

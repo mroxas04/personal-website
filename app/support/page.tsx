@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 
 export default function SupportPage() {
   const paymentsReady = Boolean(
-    SUPPORT_PAYMENT.venmoBusinessUrl ||
-    (SUPPORT_PAYMENT.zelleQrImage && SUPPORT_PAYMENT.zelleDisplayName),
+    SUPPORT_PAYMENT.venmoProfileUrl ||
+    SUPPORT_PAYMENT.zellePhone ||
+    SUPPORT_PAYMENT.zelleQrImage,
   );
 
   return (
@@ -43,26 +44,31 @@ export default function SupportPage() {
         <div className="payment-heading">
           <p className="section-kicker">Optional financial support</p>
           <h2 id="payment-heading">Choose the amount yourself.</h2>
-          <p>Payment details are verified before they appear here. For now, Matthew can also share them directly after a conversation.</p>
+          <p>Use whichever method fits. There is no expected amount, and financial support is never required to continue the conversation.</p>
         </div>
         <div className="payment-grid">
           <article className="payment-card">
             <span>Venmo</span>
-            <h3>Business profile</h3>
-            {SUPPORT_PAYMENT.venmoBusinessUrl ? <a className="button button-dark" href={SUPPORT_PAYMENT.venmoBusinessUrl} target="_blank" rel="noreferrer">Open Venmo <span aria-hidden="true">↗</span></a> : <p>Not publicly activated yet.</p>}
+            <h3>Personal profile</h3>
+            {SUPPORT_PAYMENT.venmoProfileUrl ? <>
+              <p className="payment-identifier">{SUPPORT_PAYMENT.venmoHandle}</p>
+              <a className="button button-dark" href={SUPPORT_PAYMENT.venmoProfileUrl} target="_blank" rel="noreferrer">Open Venmo <span aria-hidden="true">↗</span></a>
+              <p className="payment-safety-note">If your payment is connected to a session or service, mark it as a purchase in Venmo when that option is available.</p>
+            </> : <p>Not publicly activated yet.</p>}
           </article>
           <article className="payment-card">
             <span>Zelle</span>
-            <h3>{SUPPORT_PAYMENT.zelleDisplayName ?? 'Verified recipient'}</h3>
+            <h3>{SUPPORT_PAYMENT.zelleDisplayName ?? 'Send by mobile number'}</h3>
+            {SUPPORT_PAYMENT.zellePhone ? <p className="payment-identifier">{SUPPORT_PAYMENT.zellePhone}</p> : null}
             {SUPPORT_PAYMENT.zelleQrImage ? <>
               {/* Native img keeps a user-supplied QR asset provider-agnostic. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={SUPPORT_PAYMENT.zelleQrImage} alt={`Zelle QR code for ${SUPPORT_PAYMENT.zelleDisplayName}`} />
-              <p>Confirm the recipient name in your banking app before sending.</p>
-            </> : <p>Not publicly activated yet.</p>}
+              <img src={SUPPORT_PAYMENT.zelleQrImage} alt={`Zelle QR code for ${SUPPORT_PAYMENT.zelleDisplayName ?? 'Matthew Roxas'}`} />
+            </> : null}
+            {SUPPORT_PAYMENT.zellePhone || SUPPORT_PAYMENT.zelleQrImage ? <p className="payment-safety-note">Enter the number in your banking app, then confirm the displayed recipient before sending. Zelle payments generally cannot be reversed.</p> : <p>Not publicly activated yet.</p>}
           </article>
         </div>
-        {!paymentsReady ? <p className="payment-pending-note">Financial links are intentionally hidden until business-ready account details are supplied.</p> : null}
+        {!paymentsReady ? <p className="payment-pending-note">Financial details are not publicly activated yet.</p> : null}
         <p className="support-legal-note">Support is optional payment connected to Matthew’s time and work, not a tax-deductible charitable donation. Payment records are tracked privately for accounting and follow-up.</p>
       </section>
       <SiteFooter note="Support · Pay what you can, pass it on" />

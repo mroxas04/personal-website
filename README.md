@@ -79,7 +79,7 @@ The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes bel
 
 ## Support, feedback, and testimonials
 
-`/support` presents a pay-what-you-can model without treating payment as required or charitable. Verified Venmo business and Zelle details are configured through `SUPPORT_PAYMENT` in `content/site.ts`. Keep financial options hidden until business-ready details are supplied; do not publish a private phone number or personal payment identifier.
+`/support` presents a pay-what-you-can model without treating payment as required or charitable. Public Venmo and Zelle details are configured through `SUPPORT_PAYMENT` in `content/site.ts`. The current personal identifiers were published at Matthew’s explicit request; do not add, replace, or expose any other personal payment identifier without renewed authorization. Personal-profile Venmo payments connected to a session or service must retain the purchase-option guidance shown on the page.
 
 `/feedback` collects private post-conversation feedback, rating, referral intent, follow-up permission, and an optional testimonial. Testimonial permission is explicit and separate: private only, anonymous quotation, or named quotation. Nothing is published automatically, and `/feedback` remains `noindex` and outside the sitemap.
 
