@@ -44,19 +44,19 @@ export const MEDIA = {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/morpheus_graphic.png`,
     alt: 'Featured image for Matthew Roxas’s academic papers',
-    caption: 'A Philosophy-Specific GPT (contact me for more',
+    caption: 'A Philosophy-Specific GPT (contact me for more information)',
   },
   articlesHero: {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/F3D4E142-A051-4D8A-9C4F-28B2317E697E_1_105_c.jpeg`,
     alt: 'Featured image for Matthew Roxas’s published articles',
-    caption: 'Replace with an image connected to your public-facing ideas.',
+    caption: 'The mindset I approach when creating, building, and writing',
   },
   blogHero: {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/29A4C9C8-01D3-4F24-AE69-DAC0F96E642F_1_105_c.jpeg`,
     alt: 'Featured image for Matthew Roxas’s blog',
-    caption: 'From my trip to Plant Word Museum in Washington DC for Fall Break 2025',
+    caption: 'From my trip to Planet Word Museum in Washington DC for Fall Break 2025',
   },
   heroPortrait: {
     kind: 'image',
