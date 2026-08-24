@@ -114,6 +114,13 @@ export const SUPPORT_PAYMENT: {
   zelleDisplayName: null,
 };
 
+/** Public booking link for the paid philosophical AI consultation. */
+export const CALENDLY_BOOKING = {
+  philosophicalAiConsultationUrl: 'https://calendly.com/matthewgroxas/30min',
+  durationMinutes: 30,
+  priceUsd: 30,
+} as const;
+
 /** Topics used in the personalized welcome. Edit freely as your interests evolve. */
 export const CONVERSATION_INTERESTS = [
   'AI and human judgment',

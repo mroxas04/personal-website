@@ -1558,6 +1558,66 @@ a.social-link:hover .social-handle {
   margin-top: 1.5rem;
 }
 
+.booking-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.65fr);
+  gap: clamp(2rem, 7vw, 9rem);
+  align-items: end;
+  border-bottom: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.booking-copy h2 {
+  max-width: 10ch;
+  margin: 1.25rem 0 0;
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 7vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+}
+
+.booking-copy > p:last-child,
+.booking-details > p:not(.booking-meta) {
+  color: #c3c5bf;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.booking-copy > p:last-child {
+  max-width: 56ch;
+  margin: 2rem 0 0;
+}
+
+.booking-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.booking-meta {
+  margin: 0 0 1.25rem;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.booking-details .button {
+  width: min(100%, 360px);
+  margin-top: 2rem;
+}
+
+.booking-note {
+  margin: 1rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.58rem !important;
+  text-transform: uppercase;
+}
+
 .payment-section {
   background: var(--paper-bright);
 }
@@ -2528,6 +2588,7 @@ a.writing-entry:hover {
 
   .support-hero,
   .support-option-grid,
+  .booking-section,
   .payment-heading,
   .payment-grid,
   .support-dashboard-stats {
