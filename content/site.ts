@@ -107,8 +107,8 @@ export const SUPPORT_PAYMENT: {
   zelleQrImage: string | null;
   zelleDisplayName: string | null;
 } = {
-  venmoProfileUrl: 'https://venmo.com/u/Matthew-Rojas-1',
-  venmoHandle: '@Matthew-Rojas-1',
+  venmoProfileUrl: 'https://venmo.com/u/Matthew-Roxas-1',
+  venmoHandle: '@Matthew-Roxas-1',
   zellePhone: '765-409-4521',
   zelleQrImage: null,
   zelleDisplayName: null,
