@@ -75,7 +75,7 @@ export const MEDIA = {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/21140066-985E-457A-BC39-A5626BDE2D12_1_102_o.jpeg`,
     alt: 'A moment from Matthew Roxas’s life in Indianapolis',
-    caption: 'Currently living in Broad Ripple, where this is dearly missed (iykyk)',
+    caption: 'Currently living in Indy, where this is dearly missed (iykyk)',
   },
   fieldNote: {
     kind: 'image',
@@ -88,7 +88,7 @@ export const MEDIA = {
     src: `${MEDIA_BASE_URL}/IMG_0095.mp4`,
     poster: `${MEDIA_BASE_URL}/2BA4FD45-7B16-4F39-861A-14A2DB32302A_1_105_c.jpeg`,
     alt: 'A short video recorded by Matthew Roxas',
-    caption: 'Little timelapse I forced myself to take so I wasn\'t distracted by my phone whe I had to lock in'
+    caption: 'Little timelapse I forced myself to take so I wasn\'t distracted by my phone when I had to lock in'
   },
 } satisfies Record<string, MediaSlot>;
 
