@@ -8,7 +8,13 @@ export default function SiteFooter({ note = 'Systems, AI & Philosophy · Indiana
   return (
     <footer className="site-footer">
       <a className="footer-mark" href="/">Matthew Roxas<span>.</span></a>
-      <p>{note}</p>
+      <div className="footer-details">
+        <p>{note}</p>
+        <nav className="footer-legal" aria-label="Legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">SMS terms</a>
+        </nav>
+      </div>
       <a href="/">Home ↑</a>
     </footer>
   );

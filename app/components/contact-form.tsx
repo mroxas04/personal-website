@@ -132,7 +132,10 @@ export default function ContactForm() {
       </label>
 
       <div className="form-footer">
-        <p>Your note and basic referral details are saved privately so Matthew can follow up.</p>
+        <p>
+          Your note and basic referral details are saved privately so Matthew can follow up. See the{' '}
+          <a href="/privacy">privacy policy</a>.
+        </p>
         <button className="button button-acid" type="submit" disabled={state === 'submitting'}>
           {state === 'submitting' ? 'Sending…' : 'Send the note'}
           <span aria-hidden="true">↗</span>
