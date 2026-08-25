@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
-import { SUPPORT_PAYMENT } from '../../content/site';
+import { CALENDLY_BOOKING, SUPPORT_PAYMENT } from '../../content/site';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Support the work',
-  description: 'Optional ways to support Matthew Roxas’s conversations, research, and independent work.',
+  description: 'Book a philosophical AI consultation or support Matthew Roxas’s conversations, research, and independent work.',
   alternates: { canonical: '/support' },
 };
 
@@ -37,6 +37,20 @@ export default function SupportPage() {
           <article><span>01</span><h3>Pay what you can</h3><p>Optional financial support helps create room for research, preparation, and future conversations.</p></article>
           <article><span>02</span><h3>Pass it on</h3><p>Tell one person who might benefit, make an introduction, or share the work in your own words.</p></article>
           <article><span>03</span><h3>Leave evidence</h3><p>Share honest feedback about what changed. With your permission, a reviewed excerpt may later help others understand the value.</p><a className="text-link" href="/feedback">Share feedback <span aria-hidden="true">↗</span></a></article>
+        </div>
+      </section>
+
+      <section className="section booking-section" aria-labelledby="booking-heading">
+        <div className="booking-copy">
+          <p className="section-kicker">Philosophical AI consulting</p>
+          <h2 id="booking-heading">Make room for the question.</h2>
+          <p>A focused conversation for people working through AI, judgment, responsibility, or the shape of a life and career lived alongside intelligent systems.</p>
+        </div>
+        <div className="booking-details">
+          <p className="booking-meta">{CALENDLY_BOOKING.durationMinutes} minutes · ${CALENDLY_BOOKING.priceUsd}</p>
+          <p>Choose a time and complete payment securely through Calendly.</p>
+          <a className="button button-acid" href={CALENDLY_BOOKING.philosophicalAiConsultationUrl} target="_blank" rel="noreferrer">Book a consultation <span aria-hidden="true">↗</span></a>
+          <p className="booking-note">This is a paid consulting session, separate from the optional support options below.</p>
         </div>
       </section>
 

@@ -88,7 +88,7 @@ export const MEDIA = {
     kind: 'image',
     src: `${MEDIA_BASE_URL}/21140066-985E-457A-BC39-A5626BDE2D12_1_102_o.jpeg`,
     alt: 'A moment from Matthew Roxas’s life in Indianapolis',
-    caption: 'Currently living in Indy, where this is dearly missed (iykyk)',
+    caption: 'Currently living in Broad Ripple, where this is dearly missed (iykyk)',
   },
   fieldNote: {
     kind: 'image',
@@ -126,6 +126,13 @@ export const SUPPORT_PAYMENT: {
   zelleQrImage: null,
   zelleDisplayName: null,
 };
+
+/** Public booking link for the paid philosophical AI consultation. */
+export const CALENDLY_BOOKING = {
+  philosophicalAiConsultationUrl: 'https://calendly.com/matthewgroxas/30min',
+  durationMinutes: 30,
+  priceUsd: 30,
+} as const;
 
 /** Topics used in the personalized welcome. Edit freely as your interests evolve. */
 export const CONVERSATION_INTERESTS = [
