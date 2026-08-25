@@ -15,7 +15,6 @@ type SiteHeaderProps = {
 const mainLinks = [
   ['Work', '/work'],
   ['About', '/about'],
-  ['Gratitude', '/gratitude'],
   ['Support', '/support'],
   ['Elsewhere', '/elsewhere'],
 ] as const;
