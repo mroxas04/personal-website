@@ -41,6 +41,7 @@ export default function TermsPage() {
           <section>
             <h2>STOP and HELP</h2>
             <p><strong>Reply STOP to unsubscribe at any time.</strong> You may receive one final message confirming that your opt-out was processed. After that, no further messages will be sent unless you separately opt in again.</p>
+            <p><strong>Reply START, YES, or UNSTOP to opt in or opt back in by text.</strong> You will receive an enrollment confirmation with the program name, frequency and rate disclosures, and HELP and STOP instructions.</p>
             <p><strong>Reply HELP for help.</strong> You can also contact Matthew at <a href="mailto:matthewgroxas@gmail.com">matthewgroxas@gmail.com</a>.</p>
           </section>
 

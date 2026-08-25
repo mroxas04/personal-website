@@ -14,6 +14,7 @@
     "release:ci-check": "node scripts/check-github-validation.mjs",
     "test:attribution": "node --test tests/contact-attribution.test.mjs",
     "test:lead": "node --test tests/contact-attribution.test.mjs tests/sms-consent.test.mjs",
+    "test:sms": "node --test tests/twilio-sms.test.mjs",
     "test:release": "node --test tests/check-sites-release.test.mjs",
     "db:generate": "drizzle-kit generate"
   },

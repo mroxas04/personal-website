@@ -77,6 +77,12 @@ The portfolio is public and Sign in with ChatGPT is optional. The hosting dispat
 
 The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes belong in `db/schema.ts`; generate and inspect a migration before deployment.
 
+### Inbound SMS keywords
+
+`POST /api/sms/inbound` accepts Twilio's form-encoded inbound-message webhook only after validating `X-Twilio-Signature`. Configure the server-only `TWILIO_AUTH_TOKEN` secret and set `TWILIO_SMS_WEBHOOK_URL` to the exact public URL entered in Twilio; signature validation intentionally does not trust forwarded host headers. The endpoint does not log or store inbound message content.
+
+The application fallback recognizes `HELP` and the opt-in keywords `START`, `YES`, and `UNSTOP`. The canonical automated replies live in `app/twilio-sms.ts`. If Advanced Opt-Out is enabled, configure the same keyword sets and reply text in Twilio; Twilio then sends the confirmation and includes `OptOutType`, so the application returns empty TwiML instead of sending a duplicate. Keep `STOP` under Twilio and carrier enforcement.
+
 ## Support, feedback, and testimonials
 
 `/support` presents a pay-what-you-can model without treating payment as required or charitable. Public Venmo and Zelle details are configured through `SUPPORT_PAYMENT` in `content/site.ts`. The current personal identifiers were published at Matthew’s explicit request; do not add, replace, or expose any other personal payment identifier without renewed authorization. Personal-profile Venmo payments connected to a session or service must retain the purchase-option guidance shown on the page.
