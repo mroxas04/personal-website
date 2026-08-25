@@ -1,21 +1,22 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import {
-  chmodSync,
-  mkdtempSync,
-  mkdirSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
+import { checkGithubValidation } from "../scripts/check-github-validation.mjs";
+import { checkSitesRelease } from "../scripts/check-sites-release.mjs";
+import {
+  readCanonicalMain,
+  readValidationRuns,
+} from "../scripts/github-release-state.mjs";
+
 const releaseScript = fileURLToPath(
   new URL("../scripts/check-sites-release.mjs", import.meta.url),
 );
-const ciCheckScript = fileURLToPath(
+const validationScript = fileURLToPath(
   new URL("../scripts/check-github-validation.mjs", import.meta.url),
 );
 
@@ -29,11 +30,9 @@ function git(cwd, ...args) {
 
 function createRepository(t) {
   const root = mkdtempSync(join(tmpdir(), "sites-release-check-"));
-  const remote = join(root, "remote.git");
   const worktree = join(root, "worktree");
 
   t.after(() => rmSync(root, { recursive: true, force: true }));
-  git(root, "init", "--bare", remote);
   mkdirSync(worktree);
   git(worktree, "init", "-b", "main");
   git(worktree, "config", "user.email", "release-check@example.com");
@@ -41,189 +40,207 @@ function createRepository(t) {
   writeFileSync(join(worktree, "README.md"), "initial\n");
   git(worktree, "add", "README.md");
   git(worktree, "commit", "-m", "Initial commit");
-  git(worktree, "remote", "add", "origin", remote);
-  git(worktree, "push", "-u", "origin", "main");
   git(
     worktree,
     "remote",
-    "set-url",
+    "add",
     "origin",
     "https://github.com/mroxas04/personal-website.git",
   );
 
-  return { root, worktree };
+  return { worktree };
 }
 
-function installMockGh(root) {
-  const bin = join(root, "bin");
-  const mockGh = join(bin, "gh");
-
-  mkdirSync(bin, { recursive: true });
-  writeFileSync(
-    mockGh,
-    [
-      "#!/usr/bin/env node",
-      "const args = process.argv.slice(2);",
-      "const canonical = 'mroxas04/personal-website';",
-      "const canonicalWithHost = `github.com/${canonical}`;",
-      "if (process.env.MOCK_GH_MODE === 'api') {",
-      "  const valid = args.includes('--hostname') && args.includes('github.com') && args.includes(`repos/${canonical}/commits/main`);",
-      "  if (!valid) process.exit(2);",
-      "}",
-      "if (process.env.MOCK_GH_MODE === 'runs') {",
-      "  const repoIndex = args.indexOf('--repo');",
-      "  if (repoIndex < 0 || args[repoIndex + 1] !== canonicalWithHost) process.exit(2);",
-      "}",
-      "if (process.env.MOCK_GH_EXIT === '1') process.exit(1);",
-      "process.stdout.write(process.env.MOCK_GH_RESPONSE || '');",
-      "",
-    ].join("\n"),
-  );
-  chmodSync(mockGh, 0o755);
-
-  return bin;
-}
-
-function runReleaseCheck(root, worktree, remoteSha, options = {}) {
-  const bin = installMockGh(root);
-
-  return spawnSync(process.execPath, [releaseScript], {
-    cwd: worktree,
-    encoding: "utf8",
-    env: {
-      ...process.env,
-      MOCK_GH_EXIT: options.unavailable ? "1" : "0",
-      MOCK_GH_MODE: "api",
-      MOCK_GH_RESPONSE: remoteSha,
-      PATH: `${bin}:${process.env.PATH}`,
-    },
-  });
-}
-
-function runCiCheck(root, worktree, response) {
-  const bin = installMockGh(root);
-
-  return spawnSync(process.execPath, [ciCheckScript], {
-    cwd: worktree,
-    encoding: "utf8",
-    env: {
-      ...process.env,
-      GH_HOST: "git.example.com",
-      GH_REPO: "example/fork",
-      MOCK_GH_MODE: "runs",
-      MOCK_GH_RESPONSE: JSON.stringify(response),
-      PATH: `${bin}:${process.env.PATH}`,
-    },
-  });
-}
-
-test("passes for a clean main that matches the remote", (t) => {
-  const { root, worktree } = createRepository(t);
+test("passes for a clean main that matches canonical GitHub", async (t) => {
+  const { worktree } = createRepository(t);
   const head = git(worktree, "rev-parse", "HEAD");
-  const result = runReleaseCheck(root, worktree, head);
+  const result = await checkSitesRelease({
+    cwd: worktree,
+    remoteMainReader: async () => head,
+  });
 
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /matches the current remote main/);
+  assert.equal(result, head);
 });
 
-test("rejects a non-main branch", (t) => {
-  const { root, worktree } = createRepository(t);
+test("rejects a non-main branch", async (t) => {
+  const { worktree } = createRepository(t);
   const head = git(worktree, "rev-parse", "HEAD");
   git(worktree, "switch", "-c", "dev");
 
-  const result = runReleaseCheck(root, worktree, head);
-
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /allowed only from main/);
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: worktree,
+      remoteMainReader: async () => head,
+    }),
+    /allowed only from main/,
+  );
 });
 
-test("rejects a dirty main worktree", (t) => {
-  const { root, worktree } = createRepository(t);
+test("rejects a dirty main worktree", async (t) => {
+  const { worktree } = createRepository(t);
   const head = git(worktree, "rev-parse", "HEAD");
   writeFileSync(join(worktree, "README.md"), "changed\n");
 
-  const result = runReleaseCheck(root, worktree, head);
-
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /uncommitted changes/);
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: worktree,
+      remoteMainReader: async () => head,
+    }),
+    /uncommitted changes/,
+  );
 });
 
-test("rejects a stale main after the remote advances", (t) => {
-  const { root, worktree } = createRepository(t);
-  const result = runReleaseCheck(root, worktree, "f".repeat(40));
+test("rejects a stale main after canonical GitHub advances", async (t) => {
+  const { worktree } = createRepository(t);
 
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /does not exactly match the current remote main/);
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: worktree,
+      remoteMainReader: async () => "f".repeat(40),
+    }),
+    /does not exactly match the current remote main/,
+  );
 });
 
-test("rejects an unavailable origin", (t) => {
-  const { root, worktree } = createRepository(t);
-  const head = git(worktree, "rev-parse", "HEAD");
-  git(worktree, "remote", "remove", "origin");
+test("rejects a missing or noncanonical origin", async (t) => {
+  const missing = createRepository(t);
+  git(missing.worktree, "remote", "remove", "origin");
 
-  const result = runReleaseCheck(root, worktree, head);
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: missing.worktree,
+      remoteMainReader: async () => git(missing.worktree, "rev-parse", "HEAD"),
+    }),
+    /origin remote is unavailable/,
+  );
 
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /canonical GitHub main commit could not be read/);
-});
-
-test("rejects an origin that is not the canonical repository", (t) => {
-  const { root, worktree } = createRepository(t);
-  const head = git(worktree, "rev-parse", "HEAD");
+  const fork = createRepository(t);
   git(
-    worktree,
+    fork.worktree,
     "remote",
     "set-url",
     "origin",
     "https://github.com/example/fork.git",
   );
 
-  const result = runReleaseCheck(root, worktree, head);
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: fork.worktree,
+      remoteMainReader: async () => git(fork.worktree, "rev-parse", "HEAD"),
+    }),
+    /origin must point to the canonical/,
+  );
+});
+
+test("fails closed when canonical GitHub main is unavailable", async (t) => {
+  const { worktree } = createRepository(t);
+
+  await assert.rejects(
+    checkSitesRelease({
+      cwd: worktree,
+      remoteMainReader: async () => {
+        throw new Error("unavailable");
+      },
+    }),
+    /canonical GitHub main commit could not be read/,
+  );
+});
+
+test("pins canonical GitHub API requests for main and validation", async () => {
+  const head = "a".repeat(40);
+  const requestedUrls = [];
+  const request = async (url) => {
+    requestedUrls.push(url);
+    const body = url.pathname.endsWith("/commits/main")
+      ? { sha: head }
+      : { workflow_runs: [] };
+    return new Response(JSON.stringify(body), { status: 200 });
+  };
+
+  assert.equal(await readCanonicalMain(request), head);
+  assert.deepEqual(await readValidationRuns(head, request), []);
+  assert.equal(requestedUrls[0].hostname, "api.github.com");
+  assert.equal(
+    requestedUrls[0].pathname,
+    "/repos/mroxas04/personal-website/commits/main",
+  );
+  assert.equal(
+    requestedUrls[1].pathname,
+    "/repos/mroxas04/personal-website/actions/workflows/validate.yml/runs",
+  );
+  assert.equal(requestedUrls[1].searchParams.get("head_sha"), head);
+  assert.equal(requestedUrls[1].searchParams.get("branch"), "main");
+  assert.equal(requestedUrls[1].searchParams.get("event"), "push");
+});
+
+test("accepts successful validation for the exact commit", async (t) => {
+  const { worktree } = createRepository(t);
+  const head = git(worktree, "rev-parse", "HEAD");
+  const result = await checkGithubValidation({
+    cwd: worktree,
+    validationReader: async () => [
+      {
+        head_sha: head,
+        status: "completed",
+        conclusion: "success",
+        html_url: "https://github.com/example/actions/runs/1",
+      },
+    ],
+  });
+
+  assert.equal(result.head, head);
+});
+
+test("rejects missing or unsuccessful GitHub validation", async (t) => {
+  const { worktree } = createRepository(t);
+  const head = git(worktree, "rev-parse", "HEAD");
+
+  await assert.rejects(
+    checkGithubValidation({
+      cwd: worktree,
+      validationReader: async () => [],
+    }),
+    /no push validation run exists/,
+  );
+
+  await assert.rejects(
+    checkGithubValidation({
+      cwd: worktree,
+      validationReader: async () => [
+        {
+          head_sha: head,
+          status: "completed",
+          conclusion: "failure",
+          html_url: "https://github.com/example/actions/runs/2",
+        },
+      ],
+    }),
+    /completed\/failure/,
+  );
+});
+
+test("direct release entrypoint fails with its diagnostic prefix", (t) => {
+  const { worktree } = createRepository(t);
+  git(worktree, "switch", "-c", "dev");
+  const result = spawnSync(process.execPath, [releaseScript], {
+    cwd: worktree,
+    encoding: "utf8",
+  });
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /origin must point to the canonical/);
+  assert.match(result.stderr, /^Release check failed:/);
+  assert.match(result.stderr, /allowed only from main/);
 });
 
-test("rejects an unavailable canonical GitHub main", (t) => {
-  const { root, worktree } = createRepository(t);
-  const head = git(worktree, "rev-parse", "HEAD");
-  const result = runReleaseCheck(root, worktree, head, { unavailable: true });
+test("direct validation entrypoint fails closed outside Git", (t) => {
+  const root = mkdtempSync(join(tmpdir(), "sites-validation-check-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const result = spawnSync(process.execPath, [validationScript], {
+    cwd: root,
+    encoding: "utf8",
+  });
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /canonical GitHub main commit could not be read/);
-});
-
-test("accepts successful GitHub validation for the exact commit", (t) => {
-  const { root, worktree } = createRepository(t);
-  const head = git(worktree, "rev-parse", "HEAD");
-  const result = runCiCheck(root, worktree, [
-    {
-      headSha: head,
-      status: "completed",
-      conclusion: "success",
-      url: "https://github.com/example/actions/runs/1",
-    },
-  ]);
-
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /GitHub validation passed/);
-});
-
-test("rejects missing or unsuccessful GitHub validation", (t) => {
-  const { root, worktree } = createRepository(t);
-  const head = git(worktree, "rev-parse", "HEAD");
-  const missing = runCiCheck(root, worktree, []);
-  const failed = runCiCheck(root, worktree, [
-    {
-      headSha: head,
-      status: "completed",
-      conclusion: "failure",
-      url: "https://github.com/example/actions/runs/2",
-    },
-  ]);
-
-  assert.equal(missing.status, 1);
-  assert.match(missing.stderr, /no push validation run exists/);
-  assert.equal(failed.status, 1);
-  assert.match(failed.stderr, /completed\/failure/);
+  assert.match(result.stderr, /^GitHub validation check failed:/);
+  assert.match(result.stderr, /could not be read/);
 });
