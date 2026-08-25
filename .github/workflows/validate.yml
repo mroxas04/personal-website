@@ -1,0 +1,57 @@
+name: Validate site
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+  push:
+    branches:
+      - dev
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-site-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test release guard
+        run: npm run test:release
+      - name: Build
+        run: npm run build
+
+  production-release-candidate:
+    name: Mark production release candidate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Record release handoff
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          echo "### Sites release candidate" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit \`$RELEASE_SHA\` passed validation on \`main\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "A Sites-capable Codex session can now publish this exact commit." >> "$GITHUB_STEP_SUMMARY"

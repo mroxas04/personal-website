@@ -11,6 +11,16 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 - Preserve unrelated user changes and never replace the Sites project ID or D1 binding casually.
 - Use `apply_patch` for hand-authored edits.
 
+## Branch and release policy
+
+- `dev` is the integration branch. Start feature work from `dev` and merge completed feature branches back into `dev`.
+- Treat every branch other than `main` as non-production. Local preview, lint, build, and GitHub validation are allowed there, but never obtain Sites source credentials, push to the Sites source remote, save a Sites version, deploy a Sites version, or change Sites access from a non-`main` branch.
+- `main` is the production release branch. A merge to `main` records approval to release that exact commit, but a GitHub push does not itself deploy Sites.
+- Before any Sites save or deploy, switch to `main`, fast-forward from `origin/main`, run `npm run release:check`, `npm run lint`, `npm run test:release`, and `npm run build`, then run `npm run release:check` again to close the validation time window.
+- Run `npm run release:ci-check` and require a successful GitHub `push` validation for the exact `main` commit before obtaining Sites source credentials or starting any Sites mutation.
+- After those checks pass, use the Sites hosting workflow to push the source, save a version, deploy that same version, and poll until deployment succeeds.
+- Never store Sites source credentials or short-lived tokens in GitHub Actions, repository secrets, committed files, shell history, or documentation.
+
 ## Content architecture
 
 - Reusable site/media/social settings live in `content/site.ts`.
