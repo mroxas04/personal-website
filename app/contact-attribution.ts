@@ -173,7 +173,7 @@ export function sanitizeSubmittedAttribution(
     utm_campaign: cleanText(body.utmCampaign) || null,
     utm_content: cleanText(body.utmContent) || null,
     utm_term: cleanText(body.utmTerm) || null,
-    click_id_type: clickId ? clickIdType : null,
+    click_id_type: clickId && clickIdType ? clickIdType : null,
     click_id: clickId || null,
     landing_path: safeLandingPath(body.landingPath) || null,
     referrer: safeReferrer(body.referrer) || null,
