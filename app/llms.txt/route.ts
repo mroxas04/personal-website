@@ -35,7 +35,6 @@ ${CONVERSATION_INTERESTS.map((interest) => `- ${interest}`).join('\n')}
 - Papers: ${SITE_URL}/writing/papers
 - Articles: ${SITE_URL}/writing/articles
 - Blog: ${SITE_URL}/writing/blog
-- Gratitude: ${SITE_URL}/gratitude
 - Elsewhere: ${SITE_URL}/elsewhere
 - Contact: ${SITE_URL}/contact
 - Support: ${SITE_URL}/support
