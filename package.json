@@ -12,6 +12,8 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "release:check": "node scripts/check-sites-release.mjs",
     "release:ci-check": "node scripts/check-github-validation.mjs",
+    "test:attribution": "node --test tests/contact-attribution.test.mjs",
+    "test:lead": "node --test tests/contact-attribution.test.mjs tests/sms-consent.test.mjs",
     "test:release": "node --test tests/check-sites-release.test.mjs",
     "db:generate": "drizzle-kit generate"
   },

@@ -1201,6 +1201,66 @@ a.social-link:hover .social-handle {
   color: #8c8f89;
 }
 
+.sms-consent {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.sms-consent legend {
+  padding: 0 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.sms-consent legend small {
+  margin-left: 0.45rem;
+  color: var(--muted);
+  font-size: 0.52rem;
+}
+
+.contact-form .sms-consent-choice {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  align-items: start;
+  gap: 0.7rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.contact-form .sms-consent-choice input {
+  width: 1.1rem;
+  min-height: 1.1rem;
+  margin: 0.1rem 0 0;
+  accent-color: var(--signal);
+}
+
+.contact-form .sms-consent-choice > span {
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-transform: none;
+}
+
+.sms-consent p {
+  margin: 0.75rem 0 0 1.8rem;
+  color: var(--muted);
+  font-size: 0.67rem;
+  line-height: 1.55;
+}
+
+.sms-consent a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .honeypot {
   position: absolute;
   width: 1px;

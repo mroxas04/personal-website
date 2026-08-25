@@ -36,6 +36,20 @@
       "when": 1787503850058,
       "tag": "0004_smiling_warlock",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1787631907061,
+      "tag": "0005_mean_human_fly",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1787632081053,
+      "tag": "0006_salty_bruce_banner",
+      "breakpoints": true
     }
   ]
 }

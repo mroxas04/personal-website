@@ -1,26 +1,29 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { ATTRIBUTION_STORAGE_KEY, type ContactAttribution } from '../contact-attribution';
+import {
+  clearStoredAttribution,
+  readStoredAttribution,
+  type ContactAttribution,
+} from '../contact-attribution';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
-function readAttribution(): Partial<ContactAttribution> {
+function readAttribution(): Partial<Omit<ContactAttribution, 'capturedAt'>> {
   try {
-    const stored = sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
-    if (!stored) return {};
-
-    const parsed = JSON.parse(stored) as Partial<Record<keyof ContactAttribution, unknown>>;
-    const text = (value: unknown) => typeof value === 'string' ? value : '';
+    const parsed = readStoredAttribution(sessionStorage);
+    if (!parsed) return {};
 
     return {
-      utmSource: text(parsed.utmSource),
-      utmMedium: text(parsed.utmMedium),
-      utmCampaign: text(parsed.utmCampaign),
-      utmContent: text(parsed.utmContent),
-      utmTerm: text(parsed.utmTerm),
-      landingPath: text(parsed.landingPath),
-      referrer: text(parsed.referrer),
+      utmSource: parsed.utmSource,
+      utmMedium: parsed.utmMedium,
+      utmCampaign: parsed.utmCampaign,
+      utmContent: parsed.utmContent,
+      utmTerm: parsed.utmTerm,
+      clickIdType: parsed.clickIdType,
+      clickId: parsed.clickId,
+      landingPath: parsed.landingPath,
+      referrer: parsed.referrer,
     };
   } catch {
     return {};
@@ -30,6 +33,7 @@ function readAttribution(): Partial<ContactAttribution> {
 export default function ContactForm() {
   const [state, setState] = useState<FormState>('idle');
   const [error, setError] = useState('');
+  const [smsConsent, setSmsConsent] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,6 +60,8 @@ export default function ContactForm() {
       }
 
       form.reset();
+      setSmsConsent(false);
+      clearStoredAttribution(sessionStorage);
       setState('success');
     } catch (submissionError) {
       setError(
@@ -84,6 +90,38 @@ export default function ContactForm() {
         <span>Organization / context</span>
         <input name="organization" type="text" autoComplete="organization" maxLength={180} />
       </label>
+
+      <label>
+        <span>Mobile number <small>Optional</small></span>
+        <input
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          maxLength={40}
+          required={smsConsent}
+          aria-describedby="sms-consent-disclosure"
+        />
+      </label>
+
+      <fieldset className="sms-consent">
+        <legend>SMS follow-up <small>Optional</small></legend>
+        <label className="sms-consent-choice">
+          <input
+            name="smsConsent"
+            type="checkbox"
+            value="yes"
+            checked={smsConsent}
+            onChange={(event) => setSmsConsent(event.currentTarget.checked)}
+          />
+          <span>I agree to receive one-to-one text responses and follow-up from Matthew Roxas about this request.</span>
+        </label>
+        <p id="sms-consent-disclosure">
+          Consent is optional and is not required to send this form. Message frequency varies.
+          Message and data rates may apply. Reply STOP to opt out or HELP for help. See the{' '}
+          <a href="/privacy">privacy policy</a> and <a href="/terms">SMS terms</a>.
+        </p>
+      </fieldset>
 
       <label>
         <span>What kind of conversation? *</span>
