@@ -127,8 +127,10 @@ export const SUPPORT_PAYMENT: {
   zelleDisplayName: null,
 };
 
-/** Public booking link for the paid philosophical AI consultation. */
+/** Public booking links. The free diagnosis is the primary contact entry. */
 export const CALENDLY_BOOKING = {
+  strategicDiagnosisCallUrl: 'https://calendly.com/matthewgroxas/strategic-diagnosis-call',
+  strategicDiagnosisDurationMinutes: 30,
   philosophicalAiConsultationUrl: 'https://calendly.com/matthewgroxas/30min',
   durationMinutes: 30,
   priceUsd: 30,
