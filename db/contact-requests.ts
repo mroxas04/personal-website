@@ -6,6 +6,7 @@ export type ContactRequestRecord = {
   name: string;
   email: string;
   organization: string | null;
+  phone: string | null;
   reason: string;
   message: string;
   heard_about: string | null;
@@ -14,6 +15,10 @@ export type ContactRequestRecord = {
   utm_campaign: string | null;
   utm_content: string | null;
   utm_term: string | null;
+  click_id_type: string | null;
+  click_id: string | null;
+  sms_consent_at: number | null;
+  sms_consent_version: string | null;
   landing_path: string | null;
   referrer: string | null;
   status: ContactRequestStatus;
@@ -32,6 +37,7 @@ const createTableSql = `CREATE TABLE IF NOT EXISTS contact_requests (
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   organization TEXT,
+  phone TEXT,
   reason TEXT NOT NULL,
   message TEXT NOT NULL,
   heard_about TEXT,
@@ -40,6 +46,10 @@ const createTableSql = `CREATE TABLE IF NOT EXISTS contact_requests (
   utm_campaign TEXT,
   utm_content TEXT,
   utm_term TEXT,
+  click_id_type TEXT,
+  click_id TEXT,
+  sms_consent_at INTEGER,
+  sms_consent_version TEXT,
   landing_path TEXT,
   referrer TEXT,
   status TEXT NOT NULL DEFAULT 'new',
@@ -69,16 +79,17 @@ export async function createContactRequest(input: Omit<ContactRequestRecord, 'id
   await database
     .prepare(
       `INSERT INTO contact_requests
-        (id, name, email, organization, reason, message, heard_about, utm_source,
-         utm_medium, utm_campaign, utm_content, utm_term, landing_path, referrer,
-         status, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?)`,
+        (id, name, email, organization, phone, reason, message, heard_about, utm_source,
+         utm_medium, utm_campaign, utm_content, utm_term, click_id_type, click_id,
+         sms_consent_at, sms_consent_version, landing_path, referrer, status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?)`,
     )
     .bind(
       crypto.randomUUID(),
       input.name,
       input.email,
       input.organization,
+      input.phone,
       input.reason,
       input.message,
       input.heard_about,
@@ -87,6 +98,10 @@ export async function createContactRequest(input: Omit<ContactRequestRecord, 'id
       input.utm_campaign,
       input.utm_content,
       input.utm_term,
+      input.click_id_type,
+      input.click_id,
+      input.sms_consent_at,
+      input.sms_consent_version,
       input.landing_path,
       input.referrer,
       Date.now(),
@@ -121,9 +136,10 @@ export async function getContactDashboardData(filters: ContactRequestFilters = {
 
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const requestsStatement = database.prepare(
-    `SELECT cr.id, cr.name, cr.email, cr.organization, cr.reason, cr.message,
+    `SELECT cr.id, cr.name, cr.email, cr.organization, cr.phone, cr.reason, cr.message,
             cr.heard_about, cr.utm_source, cr.utm_medium, cr.utm_campaign,
-            cr.utm_content, cr.utm_term, cr.landing_path, cr.referrer,
+            cr.utm_content, cr.utm_term, cr.click_id_type, cr.click_id,
+            cr.sms_consent_at, cr.sms_consent_version, cr.landing_path, cr.referrer,
             cr.status, cr.created_at,
             (SELECT COUNT(*)
              FROM contact_requests AS related

@@ -1,5 +1,7 @@
 import { env } from 'cloudflare:workers';
 import { createContactRequest } from '../../../db/contact-requests';
+import { sanitizeSubmittedAttribution } from '../../contact-attribution';
+import { parseSmsConsentSubmission } from '../../sms-consent';
 
 const allowedReasons = new Set([
   'philosophy-ai',
@@ -24,19 +26,6 @@ function clean(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 }
 
-function cleanReferrer(value: unknown) {
-  const candidate = clean(value, 500);
-  if (!candidate) return '';
-
-  try {
-    const url = new URL(candidate);
-    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
-    return `${url.origin}${url.pathname}`.slice(0, 500);
-  } catch {
-    return '';
-  }
-}
-
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Record<string, unknown>;
@@ -52,14 +41,12 @@ export async function POST(request: Request) {
     const message = clean(body.message, 2400);
     const heardAboutCandidate = clean(body.heardAbout, 120);
     const heardAbout = allowedHeardAbout.has(heardAboutCandidate) ? heardAboutCandidate : '';
-    const utmSource = clean(body.utmSource, 200);
-    const utmMedium = clean(body.utmMedium, 200);
-    const utmCampaign = clean(body.utmCampaign, 200);
-    const utmContent = clean(body.utmContent, 200);
-    const utmTerm = clean(body.utmTerm, 200);
-    const landingPathCandidate = clean(body.landingPath, 300);
-    const landingPath = landingPathCandidate.startsWith('/') ? landingPathCandidate : '';
-    const referrer = cleanReferrer(body.referrer);
+    const attribution = sanitizeSubmittedAttribution(body);
+    const smsConsent = parseSmsConsentSubmission(body);
+
+    if ('error' in smsConsent) {
+      return Response.json({ error: smsConsent.error }, { status: 400 });
+    }
 
     if (!name || !email || !allowedReasons.has(reason) || message.length < 20) {
       return Response.json(
@@ -80,13 +67,8 @@ export async function POST(request: Request) {
       reason,
       message,
       heard_about: heardAbout || null,
-      utm_source: utmSource || null,
-      utm_medium: utmMedium || null,
-      utm_campaign: utmCampaign || null,
-      utm_content: utmContent || null,
-      utm_term: utmTerm || null,
-      landing_path: landingPath || null,
-      referrer: referrer || null,
+      ...attribution,
+      ...smsConsent.value,
     });
 
     return Response.json({ ok: true }, { status: 201 });

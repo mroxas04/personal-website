@@ -189,6 +189,10 @@ export default function DashboardInbox({ initialRequests, initialEmail, database
                 <h3>{request.name}</h3>
                 <a href={`mailto:${request.email}`}>{request.email}</a>
                 {request.organization ? <span>{request.organization}</span> : null}
+                {request.phone ? <a href={`tel:${request.phone}`}>{request.phone}</a> : null}
+                {request.sms_consent_at && request.sms_consent_version ? (
+                  <span>SMS consent: {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(request.sms_consent_at)} · {request.sms_consent_version}</span>
+                ) : request.phone ? <span>SMS consent: not given</span> : null}
                 {request.email_request_count > 1 ? (
                   <a className="repeat-contact-flag" href={`/dashboard?email=${encodeURIComponent(request.email)}`}>
                     Repeat contact · {request.email_request_count} total requests
@@ -199,6 +203,7 @@ export default function DashboardInbox({ initialRequests, initialEmail, database
                   <strong>{automaticSource(request)}</strong>
                   {request.heard_about ? <small>Self-reported: {heardAboutLabels[request.heard_about] ?? request.heard_about}</small> : null}
                   {request.landing_path ? <small>Landing page: {request.landing_path}</small> : null}
+                  {request.click_id_type && request.click_id ? <small>Click identifier: {request.click_id_type} · {request.click_id}</small> : null}
                 </div>
               </div>
               <p>{request.message}</p>
