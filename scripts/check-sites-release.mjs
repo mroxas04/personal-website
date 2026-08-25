@@ -1,26 +1,17 @@
 import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  GITHUB_REPOSITORY,
+  readCanonicalMain,
+} from "./github-release-state.mjs";
 
-const canonicalRepository = "mroxas04/personal-website";
-
-function git(...args) {
+function git(cwd, ...args) {
   return execFileSync("git", args, {
-    cwd: process.cwd(),
+    cwd,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   }).trim();
-}
-
-function gh(...args) {
-  return execFileSync("gh", args, {
-    cwd: process.cwd(),
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  }).trim();
-}
-
-function fail(message) {
-  console.error(`Release check failed: ${message}`);
-  process.exit(1);
 }
 
 function githubRepositoryPath(remoteUrl) {
@@ -31,46 +22,72 @@ function githubRepositoryPath(remoteUrl) {
     .replace(/\.git$/, "");
 }
 
-let branch;
-let head;
-let remoteMain;
+export async function checkSitesRelease({
+  cwd = process.cwd(),
+  remoteMainReader = readCanonicalMain,
+} = {}) {
+  let branch;
+  let head;
 
-try {
-  branch = git("branch", "--show-current");
-  head = git("rev-parse", "HEAD");
-} catch {
-  fail("Git branch information is unavailable.");
-}
-
-if (branch !== "main") {
-  fail(`Sites releases are allowed only from main; current branch is ${branch || "detached HEAD"}.`);
-}
-
-if (git("status", "--porcelain")) {
-  fail("the working tree has uncommitted changes.");
-}
-
-try {
-  const originUrl = git("config", "--get", "remote.origin.url");
-
-  if (githubRepositoryPath(originUrl) !== canonicalRepository) {
-    fail(`origin must point to the canonical ${canonicalRepository} repository.`);
+  try {
+    branch = git(cwd, "branch", "--show-current");
+    head = git(cwd, "rev-parse", "HEAD");
+  } catch {
+    throw new Error("Git branch information is unavailable.");
   }
 
-  remoteMain = gh(
-    "api",
-    "--hostname",
-    "github.com",
-    `repos/${canonicalRepository}/commits/main`,
-    "--jq",
-    ".sha",
-  );
-} catch {
-  fail("the current canonical GitHub main commit could not be read.");
+  if (branch !== "main") {
+    throw new Error(
+      `Sites releases are allowed only from main; current branch is ${branch || "detached HEAD"}.`,
+    );
+  }
+
+  if (git(cwd, "status", "--porcelain")) {
+    throw new Error("the working tree has uncommitted changes.");
+  }
+
+  let originUrl;
+
+  try {
+    originUrl = git(cwd, "config", "--get", "remote.origin.url");
+  } catch {
+    throw new Error("the origin remote is unavailable.");
+  }
+
+  if (githubRepositoryPath(originUrl) !== GITHUB_REPOSITORY) {
+    throw new Error(
+      `origin must point to the canonical ${GITHUB_REPOSITORY} repository.`,
+    );
+  }
+
+  let remoteMain;
+
+  try {
+    remoteMain = await remoteMainReader();
+  } catch {
+    throw new Error("the current canonical GitHub main commit could not be read.");
+  }
+
+  if (!remoteMain || head !== remoteMain) {
+    throw new Error(
+      "local main does not exactly match the current remote main. Fast-forward and try again.",
+    );
+  }
+
+  return head;
 }
 
-if (!remoteMain || head !== remoteMain) {
-  fail("local main does not exactly match the current remote main. Fast-forward and try again.");
-}
+const isDirectRun =
+  process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
-console.log(`Release check passed: main at ${head.slice(0, 12)} matches the current remote main.`);
+if (isDirectRun) {
+  try {
+    const head = await checkSitesRelease();
+    console.log(
+      `Release check passed: main at ${head.slice(0, 12)} matches the current remote main.`,
+    );
+  } catch (error) {
+    console.error(`Release check failed: ${error.message}`);
+    process.exitCode = 1;
+  }
+}

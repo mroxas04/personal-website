@@ -1,56 +1,58 @@
 import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { readValidationRuns } from "./github-release-state.mjs";
 
-const canonicalRepository = "github.com/mroxas04/personal-website";
-
-function command(name, args) {
-  return execFileSync(name, args, {
-    cwd: process.cwd(),
+function git(cwd, ...args) {
+  return execFileSync("git", args, {
+    cwd,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   }).trim();
 }
 
-function fail(message) {
-  console.error(`GitHub validation check failed: ${message}`);
-  process.exit(1);
+export async function checkGithubValidation({
+  cwd = process.cwd(),
+  validationReader = readValidationRuns,
+} = {}) {
+  let head;
+  let runs;
+
+  try {
+    head = git(cwd, "rev-parse", "HEAD");
+    runs = await validationReader(head);
+  } catch {
+    throw new Error(
+      "the GitHub validation result for this commit could not be read.",
+    );
+  }
+
+  const run = runs.find((candidate) => candidate.head_sha === head);
+
+  if (!run) {
+    throw new Error("no push validation run exists for this exact main commit.");
+  }
+
+  if (run.status !== "completed" || run.conclusion !== "success") {
+    throw new Error(
+      `validation for this commit is ${run.status}/${run.conclusion || "pending"}.`,
+    );
+  }
+
+  return { head, url: run.html_url };
 }
 
-let head;
-let runs;
+const isDirectRun =
+  process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
-try {
-  head = command("git", ["rev-parse", "HEAD"]);
-  const output = command("gh", [
-    "run",
-    "list",
-    "--repo",
-    canonicalRepository,
-    "--workflow",
-    "validate.yml",
-    "--branch",
-    "main",
-    "--event",
-    "push",
-    "--commit",
-    head,
-    "--limit",
-    "1",
-    "--json",
-    "headSha,status,conclusion,url",
-  ]);
-  runs = JSON.parse(output);
-} catch {
-  fail("the GitHub validation result for this commit could not be read.");
+if (isDirectRun) {
+  try {
+    const result = await checkGithubValidation();
+    console.log(
+      `GitHub validation passed for ${result.head.slice(0, 12)}: ${result.url}`,
+    );
+  } catch (error) {
+    console.error(`GitHub validation check failed: ${error.message}`);
+    process.exitCode = 1;
+  }
 }
-
-const run = runs.find((candidate) => candidate.headSha === head);
-
-if (!run) {
-  fail("no push validation run exists for this exact main commit.");
-}
-
-if (run.status !== "completed" || run.conclusion !== "success") {
-  fail(`validation for this commit is ${run.status}/${run.conclusion || "pending"}.`);
-}
-
-console.log(`GitHub validation passed for ${head.slice(0, 12)}: ${run.url}`);
