@@ -1,8 +1,17 @@
 import MediaSlot from './components/media-slot';
+import HomeContactPrompt from './components/home-contact-prompt';
 import SiteFooter from './components/site-footer';
 import SiteHeader from './components/site-header';
 import { getChatGPTUser } from './chatgpt-auth';
-import { CONVERSATION_INTERESTS, MEDIA, SITE_URL, SOCIAL_LINKS } from '../content/site';
+import {
+  CALENDLY_BOOKING,
+  CONVERSATION_INTERESTS,
+  MEDIA,
+  PUBLIC_CONTACT_PHONE,
+  SITE_URL,
+  SOCIAL_LINKS,
+  getPublicContactPhone,
+} from '../content/site';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +35,7 @@ function formatInterests(interests: readonly string[]) {
 export default async function Home() {
   const user = await getChatGPTUser();
   const visitorName = user?.displayName ?? null;
+  const publicPhone = getPublicContactPhone(PUBLIC_CONTACT_PHONE.e164);
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -60,6 +70,12 @@ export default async function Home() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      {publicPhone ? (
+        <HomeContactPrompt
+          bookingUrl={CALENDLY_BOOKING.strategicDiagnosisCallUrl}
+          phone={publicPhone}
+        />
+      ) : null}
       <SiteHeader returnTo="/" />
 
       <section className="hero" id="top">
