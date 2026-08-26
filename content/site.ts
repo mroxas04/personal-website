@@ -20,6 +20,14 @@ export type PeopleCard = {
   note?: string;
 };
 
+export type PublicContactPhone = {
+  /**
+   * Store only an explicitly approved public business number in E.164 format.
+   * Never place a private forwarding destination in this public configuration.
+   */
+  e164: string | null;
+};
+
 const MEDIA_BASE_URL =
   'https://cdn.jsdelivr.net/gh/mroxas04/personal-website@main/public/media';
 
@@ -135,6 +143,34 @@ export const CALENDLY_BOOKING = {
   durationMinutes: 30,
   priceUsd: 30,
 } as const;
+
+/**
+ * Approved public business contact number. Publishing this value still requires
+ * explicit release authorization and does not establish forwarding readiness.
+ */
+export const PUBLIC_CONTACT_PHONE: PublicContactPhone = {
+  e164: '+13179786815',
+};
+
+export function formatPublicContactPhone(e164: string) {
+  const compact = e164.trim();
+  const usNumber = compact.match(/^\+1(\d{3})(\d{3})(\d{4})$/);
+  return usNumber
+    ? `(${usNumber[1]}) ${usNumber[2]}-${usNumber[3]}`
+    : compact;
+}
+
+export function normalizePublicContactPhone(e164: string | null) {
+  const compact = e164?.trim() ?? '';
+  return /^\+[1-9]\d{7,14}$/.test(compact) ? compact : null;
+}
+
+export function getPublicContactPhone(e164: string | null) {
+  const normalized = normalizePublicContactPhone(e164);
+  return normalized
+    ? { e164: normalized, display: formatPublicContactPhone(normalized) }
+    : null;
+}
 
 /** Topics used in the personalized welcome. Edit freely as your interests evolve. */
 export const CONVERSATION_INTERESTS = [
