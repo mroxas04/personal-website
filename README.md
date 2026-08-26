@@ -83,6 +83,12 @@ The D1 binding is declared as `DB` in `.openai/hosting.json`. Schema changes bel
 
 The application fallback recognizes `HELP` and the opt-in keywords `START`, `YES`, and `UNSTOP`. The canonical automated replies live in `app/twilio-sms.ts`. If Advanced Opt-Out is enabled, configure the same keyword sets and reply text in Twilio; Twilio then sends the confirmation and includes `OptOutType`, so the application returns empty TwiML instead of sending a duplicate. Keep `STOP` under Twilio and carrier enforcement.
 
+### Inbound voice forwarding
+
+`POST /api/voice/inbound` validates Twilio's form-encoded voice webhook against the exact configured public URL, then returns only a `<Dial>` instruction for the server-only `TWILIO_VOICE_FORWARDING_NUMBER`. The route fails closed if the auth token, public webhook URL, private destination, or signature is missing or invalid. It does not log call details or add AI, recording, a greeting, or Twilio-managed voicemail.
+
+The private runtime setup, Twilio Console activation, verification, and rollback sequence is documented in [`docs/twilio-voice-forwarding.md`](docs/twilio-voice-forwarding.md).
+
 ## Support, feedback, and testimonials
 
 `/support` presents a pay-what-you-can model without treating payment as required or charitable. Public Venmo and Zelle details are configured through `SUPPORT_PAYMENT` in `content/site.ts`. The current personal identifiers were published at Matthew’s explicit request; do not add, replace, or expose any other personal payment identifier without renewed authorization. Personal-profile Venmo payments connected to a session or service must retain the purchase-option guidance shown on the page.
