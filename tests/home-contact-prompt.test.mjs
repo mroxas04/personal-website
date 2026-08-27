@@ -39,14 +39,15 @@ test('falls back to one prompt per page runtime when session storage is unavaila
   assert.equal(claimWithoutStorage(null), false);
 });
 
-test('renders an accessible homepage dialog with call, booking, and writing paths', async () => {
+test('renders an accessible homepage dialog with distinct business, coaching, call, and writing paths', async () => {
   const [homePage, prompt] = await Promise.all([
     readFile(new URL('../app/page.tsx', import.meta.url), 'utf8'),
     readFile(new URL('../app/components/home-contact-prompt.tsx', import.meta.url), 'utf8'),
   ]);
 
   assert.match(homePage, /PUBLIC_CONTACT_PHONE/);
-  assert.match(homePage, /CALENDLY_BOOKING\.strategicDiagnosisCallUrl/);
+  assert.match(homePage, /CALENDLY_BOOKING\.businessAiStrategyCallUrl/);
+  assert.match(homePage, /CALENDLY_BOOKING\.aiCoachingConversationUrl/);
   assert.match(homePage, /<HomeContactPrompt/);
 
   assert.match(prompt, /<dialog/);
@@ -54,7 +55,10 @@ test('renders an accessible homepage dialog with call, booking, and writing path
   assert.match(prompt, /aria-describedby="home-contact-prompt-description"/);
   assert.match(prompt, /showModal\(\)/);
   assert.match(prompt, /href=\{`tel:\$\{phone\.e164\}`\}/);
-  assert.match(prompt, /<CalendlyBookingLink/);
+  assert.match(prompt, /href=\{businessBookingUrl\}/);
+  assert.match(prompt, /href=\{coachingBookingUrl\}/);
+  assert.match(prompt, /Business AI Strategy Call/);
+  assert.match(prompt, /AI Coaching Conversation/);
   assert.match(prompt, /href="\/contact#write"/);
   assert.match(prompt, /aria-label="Close contact options"/);
 });
@@ -63,10 +67,11 @@ test('keeps the business number ahead of booking and anchors the written form pa
   const contactPage = await readFile(new URL('../app/contact/page.tsx', import.meta.url), 'utf8');
 
   const phonePosition = contactPage.indexOf('business-phone-heading');
-  const bookingPosition = contactPage.indexOf('diagnosis-booking-heading');
+  const bookingPosition = contactPage.indexOf('business-strategy-heading');
 
   assert.ok(phonePosition >= 0);
   assert.ok(bookingPosition > phonePosition);
   assert.match(contactPage, /className="business-phone-number"/);
+  assert.match(contactPage, /id="ai-coaching"/);
   assert.match(contactPage, /id="write"/);
 });

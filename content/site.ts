@@ -135,13 +135,14 @@ export const SUPPORT_PAYMENT: {
   zelleDisplayName: null,
 };
 
-/** Public booking links. The free diagnosis is the primary contact entry. */
+/** Public booking links. Keep business consulting and one-to-one coaching distinct. */
 export const CALENDLY_BOOKING = {
-  strategicDiagnosisCallUrl: 'https://calendly.com/matthewgroxas/strategic-diagnosis-call',
-  strategicDiagnosisDurationMinutes: 30,
-  philosophicalAiConsultationUrl: 'https://calendly.com/matthewgroxas/30min',
-  durationMinutes: 30,
-  priceUsd: 30,
+  businessAiStrategyCallUrl: 'https://calendly.com/matthewgroxas/strategic-diagnosis-call',
+  businessAiStrategyDurationMinutes: 30,
+  aiCoachingConversationUrl: 'https://calendly.com/matthewgroxas/coffee-chat',
+  implementationRoadmapDeepDiveUrl: 'https://calendly.com/matthewgroxas/30min',
+  implementationRoadmapDurationMinutes: 30,
+  implementationRoadmapPriceUsd: 30,
 } as const;
 
 /**

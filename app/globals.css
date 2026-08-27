@@ -867,7 +867,7 @@ section[id] {
 
 .home-contact-prompt-options {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--ink);
 }
 
@@ -882,8 +882,16 @@ section[id] {
   transition: background 180ms ease, color 180ms ease;
 }
 
-.home-contact-prompt-option:last-child {
+.home-contact-prompt-option:nth-child(even) {
   border-right: 0;
+}
+
+.home-contact-prompt-option:nth-child(-n + 2) {
+  border-bottom: 1px solid var(--ink);
+}
+
+.home-contact-prompt-option-coaching {
+  background: var(--paper-bright);
 }
 
 .home-contact-prompt-option:hover,
@@ -1230,6 +1238,43 @@ a.social-link:hover .social-handle {
 .contact-actions {
   display: grid;
   gap: clamp(2.75rem, 6vw, 6rem);
+}
+
+.booking-paths-heading {
+  margin-bottom: 1.5rem;
+}
+
+.booking-paths-heading .section-kicker {
+  color: rgb(243 240 233 / 66%);
+}
+
+.booking-paths-heading h2 {
+  max-width: 12ch;
+  margin: 1rem 0 0;
+  font-family: var(--display);
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.93;
+}
+
+.booking-path-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.booking-path-card h2 {
+  max-width: 12ch;
+}
+
+.coaching-booking {
+  background: var(--paper-bright);
+}
+
+.business-path-followup a {
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .diagnosis-booking {
@@ -3268,6 +3313,10 @@ a.writing-entry:hover {
   .home-contact-prompt-option {
     min-height: 145px;
     border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .home-contact-prompt-option:nth-child(-n + 2) {
     border-bottom: 1px solid var(--ink);
   }
 

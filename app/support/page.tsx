@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import CalendlyBookingLink from '../components/calendly-booking-link';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
 import { CALENDLY_BOOKING, SUPPORT_PAYMENT } from '../../content/site';
@@ -7,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Support the work',
-  description: 'Book a philosophical AI consultation or support Matthew Roxas’s conversations, research, and independent work.',
+  description: 'Book a business AI Implementation Roadmap Deep Dive or support Matthew Roxas’s conversations, research, and independent work.',
   alternates: { canonical: '/support' },
 };
 
@@ -40,17 +41,17 @@ export default function SupportPage() {
         </div>
       </section>
 
-      <section className="section booking-section" aria-labelledby="booking-heading">
+      <section className="section booking-section" id="implementation-roadmap" aria-labelledby="booking-heading">
         <div className="booking-copy">
-          <p className="section-kicker">Philosophical AI consulting</p>
-          <h2 id="booking-heading">Make room for the question.</h2>
-          <p>A focused conversation for people working through AI, judgment, responsibility, or the shape of a life and career lived alongside intelligent systems.</p>
+          <p className="section-kicker">Business AI consulting</p>
+          <h2 id="booking-heading">Implementation Roadmap Deep Dive</h2>
+          <p>A focused working session for organizations ready to turn an AI opportunity into a practical roadmap across systems, teams, operations, and implementation.</p>
         </div>
         <div className="booking-details">
-          <p className="booking-meta">{CALENDLY_BOOKING.durationMinutes} minutes · ${CALENDLY_BOOKING.priceUsd}</p>
+          <p className="booking-meta">{CALENDLY_BOOKING.implementationRoadmapDurationMinutes} minutes · ${CALENDLY_BOOKING.implementationRoadmapPriceUsd}</p>
           <p>Choose a time and complete payment securely through Calendly.</p>
-          <a className="button button-acid" href={CALENDLY_BOOKING.philosophicalAiConsultationUrl} target="_blank" rel="noreferrer">Book a consultation <span aria-hidden="true">↗</span></a>
-          <p className="booking-note">This is a paid consulting session, separate from the optional support options below.</p>
+          <CalendlyBookingLink className="button button-acid" href={CALENDLY_BOOKING.implementationRoadmapDeepDiveUrl}>Book the Deep Dive <span aria-hidden="true">↗</span></CalendlyBookingLink>
+          <p className="booking-note">This paid session is exclusively for business AI consulting. One-to-one AI coaching remains a separate conversation.</p>
         </div>
       </section>
 
