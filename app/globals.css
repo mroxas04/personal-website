@@ -1961,6 +1961,213 @@ a.social-link:hover .social-handle {
   color: var(--ink);
 }
 
+/* Gratitude */
+.gratitude-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(290px, 0.65fr);
+  gap: 2rem clamp(3rem, 8vw, 9rem);
+  min-height: 690px;
+}
+
+.gratitude-hero .eyebrow,
+.gratitude-hero h1 {
+  grid-column: 1 / -1;
+}
+
+.gratitude-hero h1 {
+  max-width: 11ch;
+  margin-bottom: 0;
+}
+
+.gratitude-hero > p:last-of-type {
+  align-self: end;
+  margin: 0;
+}
+
+.gratitude-index {
+  display: flex;
+  align-self: end;
+  border-top: 1px solid var(--ink);
+  flex-direction: column;
+}
+
+.gratitude-index a {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gratitude-index a:hover,
+.gratitude-index a:focus-visible,
+.gratitude-index a span,
+.people-group-heading > span {
+  color: var(--signal);
+}
+
+.people-directory {
+  background: var(--paper-bright);
+}
+
+.people-group {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 2fr);
+  border-bottom: 1px solid var(--ink);
+}
+
+.people-group-heading {
+  display: flex;
+  min-height: 430px;
+  padding: clamp(2rem, 4vw, 4rem) 3.25vw;
+  border-right: 1px solid var(--ink);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.people-group-heading > span,
+.person-label,
+.person-link-pending {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.people-group-heading h2 {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: clamp(3rem, 5vw, 5.75rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.people-group-heading p {
+  max-width: 28ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.person-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.person-image {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-bottom: 1px solid var(--ink);
+  background: var(--ink);
+}
+
+.person-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(1.04);
+  transition: filter 180ms ease, transform 300ms ease;
+}
+
+.person-card:hover .person-image img {
+  filter: saturate(1) contrast(1);
+  transform: scale(1.015);
+}
+
+.person-image-placeholder {
+  display: flex;
+  height: 100%;
+  padding: 1.25rem;
+  background:
+    linear-gradient(rgb(243 240 233 / 13%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(243 240 233 / 13%) 1px, transparent 1px),
+    var(--signal);
+  background-size: 30px 30px;
+  color: var(--paper);
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.person-image-placeholder span,
+.person-image-placeholder strong {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.person-image-placeholder strong {
+  width: max-content;
+  max-width: 100%;
+  margin-top: 0.55rem;
+  padding: 0.5rem 0.6rem;
+  background: var(--acid);
+  color: var(--ink);
+}
+
+.person-copy {
+  display: flex;
+  min-height: 310px;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  flex-direction: column;
+}
+
+.person-label {
+  margin: 0;
+  color: var(--signal);
+}
+
+.person-copy h3 {
+  margin: 2.5rem 0 1rem;
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 4vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+}
+
+.person-role,
+.person-note {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.person-note {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.person-link,
+.person-link-pending {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.person-link-pending {
+  color: var(--muted);
+}
 .writing-index {
   padding: 0 3.25vw clamp(5rem, 9vw, 9rem);
 }
@@ -3081,6 +3288,14 @@ a.writing-entry:hover {
   .feedback-copy {
     grid-column: 2;
   }
+
+  .people-group {
+    grid-template-columns: minmax(190px, 0.45fr) minmax(0, 1.4fr);
+  }
+
+  .people-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
@@ -3285,6 +3500,26 @@ a.writing-entry:hover {
   .request-card > p {
     grid-column: 1;
   }
+
+  .gratitude-hero,
+  .people-group {
+    grid-template-columns: 1fr;
+  }
+
+  .gratitude-hero {
+    min-height: 620px;
+  }
+
+  .gratitude-hero .eyebrow,
+  .gratitude-hero h1 {
+    grid-column: 1;
+  }
+
+  .people-group-heading {
+    min-height: 280px;
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
 }
 
 @media (max-width: 560px) {
@@ -3482,6 +3717,16 @@ a.writing-entry:hover {
 
   .dashboard-stats article {
     min-height: 145px;
+  }
+
+  .people-group-heading {
+    padding-right: 1.1rem;
+    padding-left: 1.1rem;
+  }
+
+  .person-copy {
+    min-height: 280px;
+    padding: 1.5rem 1.1rem;
   }
 }
 

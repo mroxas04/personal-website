@@ -7,6 +7,18 @@ export type MediaSlot = {
   objectPosition?: string;
 };
 
+export type PeopleGroup = 'mentors' | 'peers' | 'mentees';
+
+export type PeopleCard = {
+  group: PeopleGroup;
+  name: string;
+  linkedinUrl: string | null;
+  role: string;
+  imageSrc: string | null;
+  imageAlt: string;
+  imagePosition?: string;
+  note?: string;
+};
 export type PublicContactPhone = {
   /**
    * Store only an explicitly approved public business number in E.164 format.
@@ -183,6 +195,44 @@ export const SOCIAL_LINKS = [
   ['Roxasisms', '@roxasisms', 'https://www.instagram.com/roxasisms/'],
   ['Duolingo', '@MatthewRox5', 'https://invite.duolingo.com/profile-share/MatthewRox5'],
 ] as const;
+
+/**
+ * The gratitude page is generated from this list.
+ *
+ * - Keep `group` as mentors, peers, or mentees.
+ * - Set `imageSrc` to a public image URL and describe the real photo in `imageAlt`.
+ * - Use `imagePosition` (for example, "50% 30%") to adjust a photo's crop.
+ * - `linkedinUrl` and `note` are optional. Entries render in the order below.
+ */
+export const PEOPLE_SPOTLIGHTS: PeopleCard[] = [
+  {
+    group: 'mentors',
+    name: 'Add a mentor',
+    linkedinUrl: null,
+    role: 'Describe how this person has guided your thinking, work, or direction.',
+    imageSrc: null,
+    imageAlt: 'Photo slot for a mentor',
+    note: 'Starter card. Replace these details when you are ready to publish someone.',
+  },
+  {
+    group: 'peers',
+    name: 'Add a peer',
+    linkedinUrl: null,
+    role: 'Describe what you have built, learned, experienced, or worked through together.',
+    imageSrc: null,
+    imageAlt: 'Photo slot for a peer',
+    note: 'Starter card. Replace these details when you are ready to publish someone.',
+  },
+  {
+    group: 'mentees',
+    name: 'Add a mentee',
+    linkedinUrl: null,
+    role: 'Describe the part of their growth or trajectory that you have been able to support.',
+    imageSrc: null,
+    imageAlt: 'Photo slot for a mentee',
+    note: 'Starter card. Replace these details when you are ready to publish someone.',
+  },
+] satisfies PeopleCard[];
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://portfolio.mroxas.chatgpt.site';
