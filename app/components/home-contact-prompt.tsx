@@ -5,8 +5,7 @@ import { claimHomeContactPromptSession } from '../home-contact-prompt-session';
 import CalendlyBookingLink from './calendly-booking-link';
 
 type HomeContactPromptProps = {
-  businessBookingUrl: string;
-  coachingBookingUrl: string;
+  bookingUrl: string;
   phone: {
     display: string;
     e164: string;
@@ -14,8 +13,7 @@ type HomeContactPromptProps = {
 };
 
 export default function HomeContactPrompt({
-  businessBookingUrl,
-  coachingBookingUrl,
+  bookingUrl,
   phone,
 }: HomeContactPromptProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -61,37 +59,31 @@ export default function HomeContactPrompt({
       </div>
 
       <div className="home-contact-prompt-copy">
-        <h2 id="home-contact-prompt-heading">What kind of conversation do you need?</h2>
-        <p id="home-contact-prompt-description">
-          For an organization, start with business AI strategy. For your own
-          relationship with AI, choose coaching. Calling or writing works too.
-        </p>
+        <h2 id="home-contact-prompt-heading">Talk Through an AI Question</h2>
+        <div className="home-contact-prompt-description" id="home-contact-prompt-description">
+          <p>A conversation for anyone thinking seriously about how AI fits into their work, organization, or life.</p>
+          <p>Bring a problem, idea, workflow, or question you&apos;re wrestling with. We&apos;ll explore what&apos;s technically possible, what makes sense in practice, and the human considerations that are easy to overlook.</p>
+          <p>I&apos;m currently using these conversations to develop and refine my approach to AI advising.</p>
+        </div>
       </div>
 
       <div className="home-contact-prompt-options">
-        <CalendlyBookingLink className="home-contact-prompt-option" href={businessBookingUrl}>
-          <span className="content-meta">01 · For organizations</span>
-          <strong>Business AI Strategy Call</strong>
-          <span className="home-contact-prompt-option-detail">Systems, teams, operations, implementation</span>
-          <span aria-hidden="true">↗</span>
-        </CalendlyBookingLink>
-
-        <CalendlyBookingLink className="home-contact-prompt-option home-contact-prompt-option-coaching" href={coachingBookingUrl}>
-          <span className="content-meta">02 · For you</span>
-          <strong>AI Coaching Conversation</strong>
-          <span className="home-contact-prompt-option-detail">Work, learning, decisions, day-to-day use</span>
+        <CalendlyBookingLink className="home-contact-prompt-option" href={bookingUrl}>
+          <span className="content-meta">01 · 45 minutes · Free</span>
+          <strong>Talk Through an AI Question</strong>
+          <span className="home-contact-prompt-option-detail">Calendly opens in a new tab</span>
           <span aria-hidden="true">↗</span>
         </CalendlyBookingLink>
 
         <a className="home-contact-prompt-option" href={`tel:${phone.e164}`}>
-          <span className="content-meta">03 · Call</span>
+          <span className="content-meta">02 · Call</span>
           <strong>Call Matthew</strong>
           <span className="home-contact-prompt-option-detail">{phone.display}</span>
           <span aria-hidden="true">→</span>
         </a>
 
         <a className="home-contact-prompt-option" href="/contact#write">
-          <span className="content-meta">04 · Write</span>
+          <span className="content-meta">03 · Write</span>
           <strong>Send a note</strong>
           <span className="home-contact-prompt-option-detail">Use the private contact form</span>
           <span aria-hidden="true">→</span>
