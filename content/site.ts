@@ -19,7 +19,6 @@ export type PeopleCard = {
   imagePosition?: string;
   note?: string;
 };
-
 export type PublicContactPhone = {
   /**
    * Store only an explicitly approved public business number in E.164 format.

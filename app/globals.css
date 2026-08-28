@@ -2168,7 +2168,6 @@ a.social-link:hover .social-handle {
 .person-link-pending {
   color: var(--muted);
 }
-
 .writing-index {
   padding: 0 3.25vw clamp(5rem, 9vw, 9rem);
 }
