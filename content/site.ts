@@ -134,11 +134,10 @@ export const SUPPORT_PAYMENT: {
   zelleDisplayName: null,
 };
 
-/** Public booking links. Keep business consulting and one-to-one coaching distinct. */
+/** Public booking links. Keep the primary conversation separate from paid support. */
 export const CALENDLY_BOOKING = {
-  businessAiStrategyCallUrl: 'https://calendly.com/matthewgroxas/strategic-diagnosis-call',
-  businessAiStrategyDurationMinutes: 30,
-  aiCoachingConversationUrl: 'https://calendly.com/matthewgroxas/coffee-chat',
+  talkThroughAnAiQuestionUrl: 'https://calendly.com/matthewgroxas/talk-through-an-ai-question',
+  talkThroughAnAiQuestionDurationMinutes: 45,
   implementationRoadmapDeepDiveUrl: 'https://calendly.com/matthewgroxas/30min',
   implementationRoadmapDurationMinutes: 30,
   implementationRoadmapPriceUsd: 30,

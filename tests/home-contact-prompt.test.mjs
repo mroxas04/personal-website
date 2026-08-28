@@ -39,15 +39,14 @@ test('falls back to one prompt per page runtime when session storage is unavaila
   assert.equal(claimWithoutStorage(null), false);
 });
 
-test('renders an accessible homepage dialog with distinct business, coaching, call, and writing paths', async () => {
+test('renders an accessible homepage dialog with one AI-question booking path plus call and writing options', async () => {
   const [homePage, prompt] = await Promise.all([
     readFile(new URL('../app/page.tsx', import.meta.url), 'utf8'),
     readFile(new URL('../app/components/home-contact-prompt.tsx', import.meta.url), 'utf8'),
   ]);
 
   assert.match(homePage, /PUBLIC_CONTACT_PHONE/);
-  assert.match(homePage, /CALENDLY_BOOKING\.businessAiStrategyCallUrl/);
-  assert.match(homePage, /CALENDLY_BOOKING\.aiCoachingConversationUrl/);
+  assert.match(homePage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
   assert.match(homePage, /<HomeContactPrompt/);
 
   assert.match(prompt, /<dialog/);
@@ -55,23 +54,23 @@ test('renders an accessible homepage dialog with distinct business, coaching, ca
   assert.match(prompt, /aria-describedby="home-contact-prompt-description"/);
   assert.match(prompt, /showModal\(\)/);
   assert.match(prompt, /href=\{`tel:\$\{phone\.e164\}`\}/);
-  assert.match(prompt, /href=\{businessBookingUrl\}/);
-  assert.match(prompt, /href=\{coachingBookingUrl\}/);
-  assert.match(prompt, /Business AI Strategy Call/);
-  assert.match(prompt, /AI Coaching Conversation/);
+  assert.match(prompt, /href=\{bookingUrl\}/);
+  assert.match(prompt, /Talk Through an AI Question/);
+  assert.match(prompt, /45 minutes · Free/);
   assert.match(prompt, /href="\/contact#write"/);
   assert.match(prompt, /aria-label="Close contact options"/);
+  assert.doesNotMatch(prompt, /Business AI Strategy Call|AI Coaching Conversation/);
 });
 
-test('keeps the business number ahead of booking and anchors the written form path', async () => {
+test('keeps the business number and written form alongside the singular booking path', async () => {
   const contactPage = await readFile(new URL('../app/contact/page.tsx', import.meta.url), 'utf8');
 
   const phonePosition = contactPage.indexOf('business-phone-heading');
-  const bookingPosition = contactPage.indexOf('business-strategy-heading');
+  const bookingPosition = contactPage.indexOf('talk-through-ai-question-heading');
 
   assert.ok(phonePosition >= 0);
   assert.ok(bookingPosition > phonePosition);
   assert.match(contactPage, /className="business-phone-number"/);
-  assert.match(contactPage, /id="ai-coaching"/);
+  assert.doesNotMatch(contactPage, /id="ai-coaching"/);
   assert.match(contactPage, /id="write"/);
 });

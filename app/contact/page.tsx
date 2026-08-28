@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Choose business AI consulting or one-to-one AI coaching with Matthew Roxas, or send a note.',
+  description: 'Talk through an AI question with Matthew Roxas, call or text, or send a note.',
   alternates: { canonical: '/contact' },
 };
 
@@ -27,7 +27,7 @@ export default function ContactPage() {
         <div className="contact-heading">
           <p className="section-kicker">Start a conversation</p>
           <h1>Bring me the interesting, messy question.</h1>
-          <p>Choose the path that matches the question: business AI consulting for an organization, or one-to-one coaching for how AI fits into your own work and life.</p>
+          <p>Talk through how AI fits into your work, organization, or life. If a call is not the right fit, you can still call, text, or send a note.</p>
           <div className="availability"><span className="availability-dot" aria-hidden="true" />Open to thoughtful conversations</div>
         </div>
 
@@ -52,44 +52,26 @@ export default function ContactPage() {
 
           <section className="booking-paths" aria-labelledby="booking-paths-heading">
             <div className="booking-paths-heading">
-              <p className="section-kicker">Choose a path</p>
-              <h2 id="booking-paths-heading">Two kinds of AI conversation.</h2>
+              <p className="section-kicker">Talk Through an AI Question</p>
+              <h2 id="booking-paths-heading">One conversation, open to the question in front of you.</h2>
             </div>
 
             <div className="booking-path-grid">
-              <article className="diagnosis-booking booking-path-card" aria-labelledby="business-strategy-heading">
-                <p className="section-kicker">For organizations</p>
-                <h2 id="business-strategy-heading">Business AI Strategy Call</h2>
-                <p>For teams deciding where AI belongs in their systems, operations, and implementation work. We’ll clarify the business problem, pressure-test the opportunity, and name a useful next step.</p>
-                <p className="business-path-followup">If the work needs a detailed plan, the paid <a href="/support#implementation-roadmap">Implementation Roadmap Deep Dive</a> is available as a separate business-only follow-up.</p>
+              <article className="diagnosis-booking booking-path-card" aria-labelledby="talk-through-ai-question-heading">
+                <p className="section-kicker">For anyone thinking seriously about AI</p>
+                <h2 id="talk-through-ai-question-heading">Talk Through an AI Question</h2>
+                <p>Bring a problem, idea, workflow, or question you&apos;re wrestling with. We&apos;ll explore what&apos;s technically possible, what makes sense in practice, and the human considerations that are easy to overlook.</p>
+                <p>I&apos;m currently using these conversations to develop and refine my approach to AI advising.</p>
                 <div className="diagnosis-booking-action">
                   <div>
-                    <p className="diagnosis-booking-meta">Free · {CALENDLY_BOOKING.businessAiStrategyDurationMinutes} minutes · Google Meet</p>
+                    <p className="diagnosis-booking-meta">{CALENDLY_BOOKING.talkThroughAnAiQuestionDurationMinutes} minutes · Free</p>
                     <p className="diagnosis-booking-note">Calendly opens in a new tab.</p>
                   </div>
                   <CalendlyBookingLink
                     className="button button-dark"
-                    href={CALENDLY_BOOKING.businessAiStrategyCallUrl}
+                    href={CALENDLY_BOOKING.talkThroughAnAiQuestionUrl}
                   >
-                    Book business strategy <span aria-hidden="true">↗</span>
-                  </CalendlyBookingLink>
-                </div>
-              </article>
-
-              <article className="diagnosis-booking booking-path-card coaching-booking" id="ai-coaching" aria-labelledby="ai-coaching-heading">
-                <p className="section-kicker">For you</p>
-                <h2 id="ai-coaching-heading">AI Coaching Conversation</h2>
-                <p>A relaxed one-to-one conversation about using AI with more confidence and intention. Bring a question from your work, learning, creative practice, decisions, or everyday life.</p>
-                <div className="diagnosis-booking-action">
-                  <div>
-                    <p className="diagnosis-booking-meta">One-to-one · Personal · Google Meet</p>
-                    <p className="diagnosis-booking-note">Calendly opens in a new tab.</p>
-                  </div>
-                  <CalendlyBookingLink
-                    className="button button-dark"
-                    href={CALENDLY_BOOKING.aiCoachingConversationUrl}
-                  >
-                    Book AI coaching <span aria-hidden="true">↗</span>
+                    Book the conversation <span aria-hidden="true">↗</span>
                   </CalendlyBookingLink>
                 </div>
               </article>
