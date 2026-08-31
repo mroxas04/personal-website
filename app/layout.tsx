@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import AttributionCapture from './components/attribution-capture';
 import { SITE_URL } from '../content/site';
@@ -61,7 +62,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><AttributionCapture />{children}</body>
+      <body>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-MKP8BCFEVC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MKP8BCFEVC');`}
+        </Script>
+        <AttributionCapture />
+        {children}
+      </body>
     </html>
   );
 }

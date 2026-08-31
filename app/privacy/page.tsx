@@ -23,7 +23,7 @@ export default function PrivacyPage() {
       <section className="section legal-content">
         <aside className="legal-aside" aria-label="Policy details">
           <span className="content-meta">Last updated</span>
-          <p>August 25, 2026</p>
+          <p>August 31, 2026</p>
           <p>This policy covers this website, its forms, and Matthew Roxas SMS communications.</p>
         </aside>
 
@@ -32,6 +32,7 @@ export default function PrivacyPage() {
             <h2>Information collected</h2>
             <p>Matthew collects information you choose to provide, such as your name, email address, organization, message, feedback, support details, and, if you provide it, your mobile phone number and SMS consent choice.</p>
             <p>The site may also collect limited referral and technical context, such as the page where your visit began, campaign parameters, and a query-free referring page. If you use Sign in with ChatGPT, the site receives a site-scoped user ID, email address, and optional full name. It does not receive your ChatGPT files, memories, chats, or interests.</p>
+            <p>The site uses Google Analytics to understand aggregate site use. Google may collect device, browser, page, and interaction information through cookies or similar technologies under its own privacy terms. This information helps Matthew improve the site and is not used to identify you personally.</p>
           </section>
 
           <section>
