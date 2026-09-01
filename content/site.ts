@@ -117,19 +117,19 @@ export const ANALYTICS_DASHBOARD_URL: string | null = null;
 
 /**
  * Public payment identifiers. Matthew explicitly authorized the personal Venmo
- * handle and Zelle-enrolled phone number below for display on the public site.
+ * handle and Zelle email address below for display on the public site.
  * Do not add or replace personal identifiers without renewed authorization.
  */
 export const SUPPORT_PAYMENT: {
   venmoProfileUrl: string | null;
   venmoHandle: string | null;
-  zellePhone: string | null;
+  zelleEmail: string | null;
   zelleQrImage: string | null;
   zelleDisplayName: string | null;
 } = {
   venmoProfileUrl: 'https://venmo.com/u/Matthew-Roxas-1',
   venmoHandle: '@Matthew-Roxas-1',
-  zellePhone: '765-409-4521',
+  zelleEmail: 'matthewroxas@gmail.com',
   zelleQrImage: null,
   zelleDisplayName: null,
 };

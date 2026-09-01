@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function SupportPage() {
   const paymentsReady = Boolean(
     SUPPORT_PAYMENT.venmoProfileUrl ||
-    SUPPORT_PAYMENT.zellePhone ||
+    SUPPORT_PAYMENT.zelleEmail ||
     SUPPORT_PAYMENT.zelleQrImage,
   );
 
@@ -73,14 +73,14 @@ export default function SupportPage() {
           </article>
           <article className="payment-card">
             <span>Zelle</span>
-            <h3>{SUPPORT_PAYMENT.zelleDisplayName ?? 'Send by mobile number'}</h3>
-            {SUPPORT_PAYMENT.zellePhone ? <p className="payment-identifier">{SUPPORT_PAYMENT.zellePhone}</p> : null}
+            <h3>{SUPPORT_PAYMENT.zelleDisplayName ?? 'Send by email address'}</h3>
+            {SUPPORT_PAYMENT.zelleEmail ? <p className="payment-identifier">{SUPPORT_PAYMENT.zelleEmail}</p> : null}
             {SUPPORT_PAYMENT.zelleQrImage ? <>
               {/* Native img keeps a user-supplied QR asset provider-agnostic. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={SUPPORT_PAYMENT.zelleQrImage} alt={`Zelle QR code for ${SUPPORT_PAYMENT.zelleDisplayName ?? 'Matthew Roxas'}`} />
             </> : null}
-            {SUPPORT_PAYMENT.zellePhone || SUPPORT_PAYMENT.zelleQrImage ? <p className="payment-safety-note">Enter the number in your banking app, then confirm the displayed recipient before sending. Zelle payments generally cannot be reversed.</p> : <p>Not publicly activated yet.</p>}
+            {SUPPORT_PAYMENT.zelleEmail || SUPPORT_PAYMENT.zelleQrImage ? <p className="payment-safety-note">Enter the email address in your banking app, then confirm the displayed recipient before sending. Zelle payments generally cannot be reversed.</p> : <p>Not publicly activated yet.</p>}
           </article>
         </div>
         {!paymentsReady ? <p className="payment-pending-note">Financial details are not publicly activated yet.</p> : null}
