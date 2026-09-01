@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
 import {
@@ -90,6 +91,8 @@ function PersonCard({ person }: { person: PeopleCard }) {
 }
 
 export default function GratitudePage() {
+  notFound();
+
   return (
     <main>
       <SiteHeader returnTo="/gratitude" />

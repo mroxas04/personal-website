@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/writing/papers`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/writing/articles`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/writing/blog`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/gratitude`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/elsewhere`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/support`, lastModified, changeFrequency: 'monthly', priority: 0.5 },
