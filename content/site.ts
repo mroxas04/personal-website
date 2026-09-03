@@ -113,7 +113,7 @@ export const MEDIA = {
 } satisfies Record<string, MediaSlot>;
 
 /** Set this when you have GA4, Plausible, or another analytics dashboard. */
-export const ANALYTICS_DASHBOARD_URL: string | null = null;
+export const ANALYTICS_DASHBOARD_URL: string | null = 'https://analytics.google.com/analytics/web/#/a406354173p552197068/reports/intelligenthome?params=_u..nav%3Dmaui';
 
 /**
  * Public payment identifiers. Matthew explicitly authorized the personal Venmo
