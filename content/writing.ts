@@ -26,14 +26,14 @@ export const WRITING: WritingEntry[] = [
     href: null,
   },
   {
-    title: 'Writing for the Orr Fellowship blog',
+    title: 'What if We Only Hired for Soft Skills?',
     category: 'Article',
     outlet: 'Orr Fellowship',
     year: 2026,
-    status: 'Forthcoming',
+    status: 'Published',
     description:
-      'Essays and field notes on building, operating, leadership, and the questions that emerge when technical systems meet lived experience.',
-    href: null,
+      'Reflecting on the value of soft skills in the evolving professional landscape.',
+    href: 'https://orrfellowship.org/what-if-we-only-hired-for-soft-skills/',
   },
   {
     title: 'Context is not just more information',
