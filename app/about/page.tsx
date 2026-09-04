@@ -3,7 +3,7 @@ import MediaSlot from '../components/media-slot';
 import PageHero from '../components/page-hero';
 import SiteFooter from '../components/site-footer';
 import SiteHeader from '../components/site-header';
-import { MEDIA } from '../../content/site';
+import { ABOUT_PORTFOLIO, MEDIA } from '../../content/site';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
+function choosePortfolioEntries(entries: typeof ABOUT_PORTFOLIO, count: number) {
+  if (entries.length < count) {
+    throw new Error(`About portfolio needs at least ${count} entries.`);
+  }
+
+  return [...entries]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, count);
+}
+
 const timeline = [
   { period: '2022–26', title: 'Purdue University', detail: 'B.S. Computer Engineering · Philosophy minor · AI/ML concentration' },
   { period: '2023–26', title: 'Teaching & building', detail: 'Data science labs, Fourier analysis, trustworthy AI, and community data systems' },
@@ -21,6 +31,8 @@ const timeline = [
 ];
 
 export default function AboutPage() {
+  const portfolioEntries = choosePortfolioEntries(ABOUT_PORTFOLIO, 4);
+
   return (
     <main>
       <SiteHeader returnTo="/about" />
@@ -39,7 +51,7 @@ export default function AboutPage() {
       </section>
       <section className="section media-section">
         <div className="section-intro"><p className="section-kicker">Field notes</p><h2>A life beyond the résumé.</h2><p>Images from the places, people, and ordinary moments that sit outside the project list.</p></div>
-        <div className="media-grid"><MediaSlot slot={MEDIA.studioMoment} variableName="MEDIA.studioMoment" className="media-wide" /><MediaSlot slot={MEDIA.livedMoment} variableName="MEDIA.livedMoment" /><MediaSlot slot={MEDIA.fieldNote} variableName="MEDIA.fieldNote" /><MediaSlot slot={MEDIA.motionStudy} variableName="MEDIA.motionStudy" className="media-wide" /></div>
+        <div className="media-grid">{portfolioEntries.map((entry, index) => <MediaSlot key={`${entry.src ?? entry.caption}-${index}`} slot={entry} variableName="ABOUT_PORTFOLIO" className={index % 3 === 0 ? 'media-wide' : undefined} />)}</div>
       </section>
       <SiteFooter note="About · Engineering, operations & philosophy" />
     </main>

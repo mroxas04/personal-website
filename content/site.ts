@@ -112,6 +112,14 @@ export const MEDIA = {
   },
 } satisfies Record<string, MediaSlot>;
 
+/** Public-approved About portfolio entries. Add a complete image/caption pair here. */
+export const ABOUT_PORTFOLIO: MediaSlot[] = [
+  MEDIA.studioMoment,
+  MEDIA.livedMoment,
+  MEDIA.fieldNote,
+  MEDIA.motionStudy,
+];
+
 /** Set this when you have GA4, Plausible, or another analytics dashboard. */
 export const ANALYTICS_DASHBOARD_URL: string | null = 'https://analytics.google.com/analytics/web/#/a406354173p552197068/reports/intelligenthome?params=_u..nav%3Dmaui';
 
@@ -138,6 +146,7 @@ export const SUPPORT_PAYMENT: {
 export const CALENDLY_BOOKING = {
   talkThroughAnAiQuestionUrl: 'https://calendly.com/matthewgroxas/talk-through-an-ai-question',
   talkThroughAnAiQuestionDurationMinutes: 45,
+  coffeeChatUrl: 'https://calendly.com/matthewgroxas/coffee-chat-1',
   implementationRoadmapDeepDiveUrl: 'https://calendly.com/matthewgroxas/30min',
   implementationRoadmapDurationMinutes: 30,
   implementationRoadmapPriceUsd: 30,
