@@ -5,7 +5,7 @@ import test from 'node:test';
 import { buildCalendlyBookingUrl } from '../app/calendly-booking.ts';
 import { CALENDLY_BOOKING } from '../content/site.ts';
 
-const TALK_THROUGH_AI_QUESTION_URL = 'https://calendly.com/matthewgroxas/talk-through-an-ai-question';
+const TALK_THROUGH_AI_QUESTION_URL = 'https://calendly.com/matthewgroxas/coffee-chat-1';
 const IMPLEMENTATION_ROADMAP_URL = 'https://calendly.com/matthewgroxas/30min';
 
 test('publishes one free AI-question conversation while preserving the paid deep dive', () => {

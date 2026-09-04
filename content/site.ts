@@ -136,7 +136,7 @@ export const SUPPORT_PAYMENT: {
 
 /** Public booking links. Keep the primary conversation separate from paid support. */
 export const CALENDLY_BOOKING = {
-  talkThroughAnAiQuestionUrl: 'https://calendly.com/matthewgroxas/talk-through-an-ai-question',
+  talkThroughAnAiQuestionUrl: 'https://calendly.com/matthewgroxas/coffee-chat-1',
   talkThroughAnAiQuestionDurationMinutes: 45,
   implementationRoadmapDeepDiveUrl: 'https://calendly.com/matthewgroxas/30min',
   implementationRoadmapDurationMinutes: 30,
