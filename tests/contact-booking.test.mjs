@@ -5,27 +5,35 @@ import test from 'node:test';
 import { buildCalendlyBookingUrl } from '../app/calendly-booking.ts';
 import { CALENDLY_BOOKING } from '../content/site.ts';
 
-const TALK_THROUGH_AI_QUESTION_URL = 'https://calendly.com/matthewgroxas/coffee-chat-1';
+const TALK_THROUGH_AI_QUESTION_URL = 'https://calendly.com/matthewgroxas/talk-through-an-ai-question';
+const COFFEE_CHAT_URL = 'https://calendly.com/matthewgroxas/coffee-chat-1';
 const IMPLEMENTATION_ROADMAP_URL = 'https://calendly.com/matthewgroxas/30min';
 
-test('publishes one free AI-question conversation while preserving the paid deep dive', () => {
+test('publishes distinct AI-question and coffee-chat paths while preserving the paid deep dive', () => {
   assert.equal(CALENDLY_BOOKING.talkThroughAnAiQuestionUrl, TALK_THROUGH_AI_QUESTION_URL);
   assert.equal(CALENDLY_BOOKING.talkThroughAnAiQuestionDurationMinutes, 45);
+  assert.equal(CALENDLY_BOOKING.coffeeChatUrl, COFFEE_CHAT_URL);
   assert.equal(CALENDLY_BOOKING.implementationRoadmapDeepDiveUrl, IMPLEMENTATION_ROADMAP_URL);
   assert.notEqual(
     CALENDLY_BOOKING.talkThroughAnAiQuestionUrl,
+    CALENDLY_BOOKING.coffeeChatUrl,
+  );
+  assert.notEqual(
+    CALENDLY_BOOKING.coffeeChatUrl,
     CALENDLY_BOOKING.implementationRoadmapDeepDiveUrl,
   );
 });
 
-test('offers one AI-question path on Contact while keeping the paid deep dive business-only', async () => {
+test('offers distinct AI-question and coffee-chat paths on Contact while keeping the paid deep dive business-only', async () => {
   const [contactPage, supportPage] = await Promise.all([
     readFile(new URL('../app/contact/page.tsx', import.meta.url), 'utf8'),
     readFile(new URL('../app/support/page.tsx', import.meta.url), 'utf8'),
   ]);
 
   assert.match(contactPage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
+  assert.match(contactPage, /CALENDLY_BOOKING\.coffeeChatUrl/);
   assert.match(contactPage, /Talk Through an AI Question/);
+  assert.match(contactPage, /Coffee Chat/);
   assert.match(contactPage, /develop and refine my approach to AI advising/);
   assert.doesNotMatch(contactPage, /CALENDLY_BOOKING\.implementationRoadmapDeepDiveUrl/);
   assert.match(contactPage, /ContactForm/);
@@ -35,10 +43,11 @@ test('offers one AI-question path on Contact while keeping the paid deep dive bu
   assert.match(supportPage, /Implementation Roadmap Deep Dive/);
   assert.match(supportPage, /exclusively for business AI consulting/i);
   assert.doesNotMatch(supportPage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
+  assert.doesNotMatch(supportPage, /CALENDLY_BOOKING\.coffeeChatUrl/);
 });
 
 test('carries the existing lead UTM fields into the public booking without forwarding private context', () => {
-  for (const bookingUrl of [TALK_THROUGH_AI_QUESTION_URL]) {
+  for (const bookingUrl of [TALK_THROUGH_AI_QUESTION_URL, COFFEE_CHAT_URL]) {
     const url = new URL(buildCalendlyBookingUrl(bookingUrl, {
       utmSource: 'linkedin',
       utmMedium: 'social',

@@ -39,7 +39,7 @@ test('falls back to one prompt per page runtime when session storage is unavaila
   assert.equal(claimWithoutStorage(null), false);
 });
 
-test('renders an accessible homepage dialog with one AI-question booking path plus call and writing options', async () => {
+test('renders an accessible homepage dialog with AI-question and coffee-chat paths plus call and writing options', async () => {
   const [homePage, prompt] = await Promise.all([
     readFile(new URL('../app/page.tsx', import.meta.url), 'utf8'),
     readFile(new URL('../app/components/home-contact-prompt.tsx', import.meta.url), 'utf8'),
@@ -47,6 +47,7 @@ test('renders an accessible homepage dialog with one AI-question booking path pl
 
   assert.match(homePage, /PUBLIC_CONTACT_PHONE/);
   assert.match(homePage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
+  assert.match(homePage, /CALENDLY_BOOKING\.coffeeChatUrl/);
   assert.match(homePage, /<HomeContactPrompt/);
 
   assert.match(prompt, /<dialog/);
@@ -54,22 +55,26 @@ test('renders an accessible homepage dialog with one AI-question booking path pl
   assert.match(prompt, /aria-describedby="home-contact-prompt-description"/);
   assert.match(prompt, /showModal\(\)/);
   assert.match(prompt, /href=\{`tel:\$\{phone\.e164\}`\}/);
-  assert.match(prompt, /href=\{bookingUrl\}/);
+  assert.match(prompt, /href=\{aiQuestionBookingUrl\}/);
+  assert.match(prompt, /href=\{coffeeChatBookingUrl\}/);
   assert.match(prompt, /Talk Through an AI Question/);
+  assert.match(prompt, /Coffee Chat/);
   assert.match(prompt, /45 minutes · Free/);
   assert.match(prompt, /href="\/contact#write"/);
   assert.match(prompt, /aria-label="Close contact options"/);
   assert.doesNotMatch(prompt, /Business AI Strategy Call|AI Coaching Conversation/);
 });
 
-test('keeps the business number and written form alongside the singular booking path', async () => {
+test('keeps the business number and written form alongside both booking paths', async () => {
   const contactPage = await readFile(new URL('../app/contact/page.tsx', import.meta.url), 'utf8');
 
   const phonePosition = contactPage.indexOf('business-phone-heading');
-  const bookingPosition = contactPage.indexOf('talk-through-ai-question-heading');
+  const aiQuestionPosition = contactPage.indexOf('talk-through-ai-question-heading');
+  const coffeeChatPosition = contactPage.indexOf('coffee-chat-heading');
 
   assert.ok(phonePosition >= 0);
-  assert.ok(bookingPosition > phonePosition);
+  assert.ok(aiQuestionPosition > phonePosition);
+  assert.ok(coffeeChatPosition > aiQuestionPosition);
   assert.match(contactPage, /className="business-phone-number"/);
   assert.doesNotMatch(contactPage, /id="ai-coaching"/);
   assert.match(contactPage, /id="write"/);

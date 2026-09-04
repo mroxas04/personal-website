@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Talk through an AI question with Matthew Roxas, call or text, or send a note.',
+  description: 'Talk through an AI question or arrange a coffee chat with Matthew Roxas, call or text, or send a note.',
   alternates: { canonical: '/contact' },
 };
 
@@ -52,8 +52,8 @@ export default function ContactPage() {
 
           <section className="booking-paths" aria-labelledby="booking-paths-heading">
             <div className="booking-paths-heading">
-              <p className="section-kicker">Talk Through an AI Question</p>
-              <h2 id="booking-paths-heading">One conversation, open to the question in front of you.</h2>
+              <p className="section-kicker">Start with a conversation</p>
+              <h2 id="booking-paths-heading">Choose the conversation that fits.</h2>
             </div>
 
             <div className="booking-path-grid">
@@ -72,6 +72,21 @@ export default function ContactPage() {
                     href={CALENDLY_BOOKING.talkThroughAnAiQuestionUrl}
                   >
                     Book the conversation <span aria-hidden="true">↗</span>
+                  </CalendlyBookingLink>
+                </div>
+              </article>
+
+              <article className="diagnosis-booking booking-path-card" aria-labelledby="coffee-chat-heading">
+                <p className="section-kicker">For an informal connection</p>
+                <h2 id="coffee-chat-heading">Coffee Chat</h2>
+                <p>A simple way to meet, catch up, compare notes, or talk through a shared interest. You don&apos;t need to arrive with a particular AI question.</p>
+                <div className="diagnosis-booking-action">
+                  <p className="diagnosis-booking-note">Calendly opens in a new tab.</p>
+                  <CalendlyBookingLink
+                    className="button button-dark"
+                    href={CALENDLY_BOOKING.coffeeChatUrl}
+                  >
+                    Book a coffee chat <span aria-hidden="true">↗</span>
                   </CalendlyBookingLink>
                 </div>
               </article>
