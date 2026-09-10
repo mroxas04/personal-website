@@ -4,6 +4,8 @@
 
 Turn one concrete organizational AI opportunity into a decision-ready starting roadmap. The session should narrow the problem and define a credible first move, not pretend to replace discovery or delivery work.
 
+Use the copy-ready [`implementation-roadmap.md`](../templates/implementation-roadmap.md) for the client deliverable. The fictional [`example-implementation-roadmap.md`](../templates/example-implementation-roadmap.md) shows the intended level of specificity without using customer information.
+
 ## Required intake
 
 Collect only what is needed to prepare:
@@ -37,6 +39,16 @@ Provide a concise written roadmap containing:
 7. Risks and open questions
 8. Success measures
 9. Named next action, owner, and target date
+
+## Delivery workflow
+
+1. Duplicate the template into a private, client-appropriate workspace.
+2. Complete only the context that is known before the call; mark assumptions instead of presenting them as facts.
+3. Use the session to resolve the decision, pilot boundary, human-review points, and next owner.
+4. Send the concise roadmap after correcting factual misunderstandings.
+5. Keep research, implementation, vendor selection, and ongoing advising outside the deliverable unless separately scoped.
+
+The fictional example was used as a simulated session to test the template end to end. That test led to explicit sections for the decision gate, out-of-scope work, baselines and targets, human escalation, and the next owner/date.
 
 ## Quality bar
 
