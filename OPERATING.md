@@ -250,7 +250,11 @@ The following playbooks establish the initial repeatable process:
 - `docs/playbooks/incident-response.md`
 
 Add more process only after a repeated need is visible. The operating system should stay lighter than the work it supports.
-- GitHub Issue templates for business work, site changes, and incidents
+
+Structured Issue templates and the pull-request checklist live in `.github/`.
+
+The next likely addition is:
+
 - A private accounting source of truth for revenue, expenses, and tax records
 
 ## 13. Quarterly review questions
