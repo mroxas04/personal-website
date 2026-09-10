@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Private or sensitive report
+    url: https://portfolio.mroxas.chatgpt.site/contact
+    about: Do not place secrets, personal information, or private customer details in a public issue.
