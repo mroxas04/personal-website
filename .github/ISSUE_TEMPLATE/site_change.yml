@@ -1,0 +1,44 @@
+name: Site change
+description: Propose a public-site, dashboard, data, or integration change.
+title: "[Site]: "
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets, private contact records, phone destinations, or personal data.
+  - type: textarea
+    id: user_need
+    attributes:
+      label: User need
+      description: Who needs what, and what currently gets in their way?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed change
+      description: Describe the smallest coherent change.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: review
+    attributes:
+      label: Review areas
+      options:
+        - label: Public promises, prices, links, and claims are accurate.
+        - label: Privacy and authentication impact has been considered.
+        - label: Mobile and accessibility behavior has been considered.
+        - label: Analytics, metadata, or structured-data impact has been considered.
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification plan
+      description: Name the checks, routes, forms, webhooks, or migrations that must be verified.
