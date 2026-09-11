@@ -33,5 +33,6 @@ Use the shape flexibly. The purpose is clarity, not completing an agenda.
 1. Send the promised next step or concise recap when appropriate.
 2. Update the request status.
 3. Invite feedback only after delivering value.
-4. Record recurring themes without identifying the participant.
-5. If the question requires a structured organizational plan, offer the Implementation Roadmap Deep Dive without pressure.
+4. Complete a private copy of the [conversation debrief](../templates/conversation-debrief.md) within 24 hours.
+5. Use the [conversation-learning playbook](conversation-learning.md) to record consistent codes and aggregate themes without identifying the participant.
+6. If the question requires a structured organizational plan, offer the Implementation Roadmap Deep Dive without pressure.
