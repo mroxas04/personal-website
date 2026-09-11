@@ -1,0 +1,45 @@
+name: Non-sensitive incident
+description: Track a service problem that contains no secrets or private data.
+title: "[Incident]: "
+body:
+  - type: markdown
+    attributes:
+      value: If the incident involves credentials, unauthorized access, or personal data, do not describe it here. Use the private contact route and rotate exposed credentials first.
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical — security or private-data risk
+        - High — important workflow unavailable or materially wrong
+        - Normal — degraded noncritical behavior
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Sanitized impact
+      description: What user-visible behavior is affected? Do not paste private content.
+    validations:
+      required: true
+  - type: textarea
+    id: timing
+    attributes:
+      label: Timing and scope
+      description: When did it start, and which routes or integrations are affected?
+    validations:
+      required: true
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Safe recovery plan
+      description: Describe containment, rollback, or fix-forward steps.
+  - type: textarea
+    id: verification
+    attributes:
+      label: Resolution checks
+      placeholder: |
+        - [ ] Unsafe behavior is contained
+        - [ ] Service is restored
+        - [ ] Affected workflow is verified
+        - [ ] Follow-up action has an owner

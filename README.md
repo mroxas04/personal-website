@@ -2,6 +2,10 @@
 
 An editorial portfolio about systems, AI, philosophy, and the work between them. The site includes optional Sign in with ChatGPT, a personalized welcome, separate Work, About, Elsewhere, Contact, Support, Feedback, and Writing pages, replaceable personal media, D1-backed forms, and an owner-only operating dashboard.
 
+## Business operations
+
+[`OPERATING.md`](OPERATING.md) is the source of truth for the business model, operating priorities, customer lifecycle, metrics, release process, and privacy boundaries. Repeatable workflows live in [`docs/playbooks/`](docs/playbooks/), and structured GitHub issue templates capture business work, site changes, and non-sensitive incidents.
+
 ## Stack
 
 - Next.js 16 / React 19 through Vinext

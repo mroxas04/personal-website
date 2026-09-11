@@ -12,6 +12,7 @@ import {
   SOCIAL_LINKS,
   getPublicContactPhone,
 } from '../content/site';
+import { FEATURED_ITEMS } from '../content/featured';
 
 export const dynamic = 'force-dynamic';
 
@@ -112,6 +113,37 @@ export default async function Home() {
               <span className="intersection-index">{item.index}</span>
               <div><h2>{item.label}</h2><p>{item.detail}</p><p className="intersection-description">{item.description}</p></div>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section home-featured-section" aria-labelledby="featured-heading">
+        <div className="section-intro home-featured-intro">
+          <p className="section-kicker">Featured</p>
+          <h2 id="featured-heading">Recently, from the workbench.</h2>
+          <p>New writing, research, and systems taking shape—selected from what I’m publishing and building now.</p>
+        </div>
+        <div className="home-featured-grid">
+          {FEATURED_ITEMS.map((item, index) => (
+            <a
+              className={`home-featured-card${index === 0 ? ' home-featured-card-lead' : ''}`}
+              href={item.href}
+              key={item.title}
+              {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+            >
+              <div className="home-featured-card-top">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <span>{item.type}</span>
+              </div>
+              <div className="home-featured-card-copy">
+                <p className="content-meta">{item.status}</p>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+              <span className="home-featured-card-link">
+                {item.cta} <span aria-hidden="true">{item.external ? '↗' : '→'}</span>
+              </span>
+            </a>
           ))}
         </div>
       </section>
