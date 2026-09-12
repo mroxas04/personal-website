@@ -27,6 +27,11 @@ test('offers one AI-question path on Contact while keeping the paid deep dive bu
   assert.match(contactPage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
   assert.match(contactPage, /Talk Through an AI Question/);
   assert.match(contactPage, /develop and refine my approach to AI advising/);
+  assert.match(contactPage, /How the conversation tends to go/);
+  assert.match(contactPage, /Start with context/);
+  assert.match(contactPage, /Look at the system/);
+  assert.match(contactPage, /Name a next move/);
+  assert.match(contactPage, /href="\/feedback"/);
   assert.doesNotMatch(contactPage, /CALENDLY_BOOKING\.implementationRoadmapDeepDiveUrl/);
   assert.match(contactPage, /ContactForm/);
   assert.doesNotMatch(contactPage, /Business AI Strategy Call|AI Coaching Conversation/);

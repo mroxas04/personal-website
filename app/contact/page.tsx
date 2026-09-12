@@ -62,6 +62,15 @@ export default function ContactPage() {
                 <h2 id="talk-through-ai-question-heading">Talk Through an AI Question</h2>
                 <p>Bring a problem, idea, workflow, or question you&apos;re wrestling with. We&apos;ll explore what&apos;s technically possible, what makes sense in practice, and the human considerations that are easy to overlook.</p>
                 <p>I&apos;m currently using these conversations to develop and refine my approach to AI advising.</p>
+                <section className="conversation-shape" aria-labelledby="conversation-shape-heading">
+                  <h3 id="conversation-shape-heading">How the conversation tends to go</h3>
+                  <ol>
+                    <li><span>01</span><div><strong>Start with context</strong><p>Bring the situation as it is. A rough question is enough; no deck or polished brief required.</p></div></li>
+                    <li><span>02</span><div><strong>Look at the system</strong><p>We&apos;ll separate technical possibility from what fits the people, workflow, and constraints involved.</p></div></li>
+                    <li><span>03</span><div><strong>Name a next move</strong><p>We&apos;ll identify the smallest useful decision, action, or experiment, not promise a turnkey plan.</p></div></li>
+                  </ol>
+                  <p className="conversation-feedback">If it helps, you can share <a href="/feedback">optional private feedback</a> afterward. Specific feedback helps shape the practice.</p>
+                </section>
                 <div className="diagnosis-booking-action">
                   <div>
                     <p className="diagnosis-booking-meta">{CALENDLY_BOOKING.talkThroughAnAiQuestionDurationMinutes} minutes · Free</p>
