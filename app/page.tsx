@@ -1,5 +1,6 @@
 import MediaSlot from './components/media-slot';
 import HomeContactPrompt from './components/home-contact-prompt';
+import CalendlyBookingLink from './components/calendly-booking-link';
 import SiteFooter from './components/site-footer';
 import SiteHeader from './components/site-header';
 import { getChatGPTUser } from './chatgpt-auth';
@@ -15,6 +16,8 @@ import {
 import { FEATURED_ITEMS } from '../content/featured';
 
 export const dynamic = 'force-dynamic';
+
+const featuredConversationUrl = `${CALENDLY_BOOKING.talkThroughAnAiQuestionUrl}?utm_source=portfolio&utm_medium=website&utm_campaign=featured-work&utm_content=featured-conversation`;
 
 const intersections = [
   { index: '01', label: 'Technical', detail: 'AI, data & software', description: 'Understanding how the system actually works.' },
@@ -145,6 +148,24 @@ export default async function Home() {
               </span>
             </a>
           ))}
+        </div>
+        <div className="home-featured-conversation">
+          <div className="home-featured-conversation-copy">
+            <p className="section-kicker">Take it further</p>
+            <h3>Have a question this work brings up?</h3>
+            <p>Bring the messy version. We can spend 45 minutes working through what is technically possible, operationally useful, and worth doing.</p>
+          </div>
+          <div className="home-featured-conversation-actions">
+            <CalendlyBookingLink
+              className="button button-acid"
+              href={featuredConversationUrl}
+            >
+              Book a free conversation <span aria-hidden="true">↗</span>
+            </CalendlyBookingLink>
+            <a className="home-featured-write-link" href="/contact#write">
+              Send context first <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </section>
 
