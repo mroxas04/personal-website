@@ -6,19 +6,15 @@ import { buildCalendlyBookingUrl } from '../app/calendly-booking.ts';
 import { CALENDLY_BOOKING } from '../content/site.ts';
 
 const TALK_THROUGH_AI_QUESTION_URL = 'https://calendly.com/matthewgroxas/talk-through-an-ai-question';
-const IMPLEMENTATION_ROADMAP_URL = 'https://calendly.com/matthewgroxas/30min';
-
-test('publishes one free AI-question conversation while preserving the paid deep dive', () => {
+test('publishes one free AI-question conversation as the primary self-serve booking', () => {
   assert.equal(CALENDLY_BOOKING.talkThroughAnAiQuestionUrl, TALK_THROUGH_AI_QUESTION_URL);
   assert.equal(CALENDLY_BOOKING.talkThroughAnAiQuestionDurationMinutes, 45);
-  assert.equal(CALENDLY_BOOKING.implementationRoadmapDeepDiveUrl, IMPLEMENTATION_ROADMAP_URL);
-  assert.notEqual(
-    CALENDLY_BOOKING.talkThroughAnAiQuestionUrl,
-    CALENDLY_BOOKING.implementationRoadmapDeepDiveUrl,
-  );
+  assert.equal('implementationRoadmapDeepDiveUrl' in CALENDLY_BOOKING, false);
+  assert.equal('implementationRoadmapDurationMinutes' in CALENDLY_BOOKING, false);
+  assert.equal('implementationRoadmapPriceUsd' in CALENDLY_BOOKING, false);
 });
 
-test('offers one AI-question path on Contact while keeping the paid deep dive business-only', async () => {
+test('keeps roadmap work inquiry-only while the free conversation remains self-serve', async () => {
   const [contactPage, supportPage] = await Promise.all([
     readFile(new URL('../app/contact/page.tsx', import.meta.url), 'utf8'),
     readFile(new URL('../app/support/page.tsx', import.meta.url), 'utf8'),
@@ -36,10 +32,12 @@ test('offers one AI-question path on Contact while keeping the paid deep dive bu
   assert.match(contactPage, /ContactForm/);
   assert.doesNotMatch(contactPage, /Business AI Strategy Call|AI Coaching Conversation/);
 
-  assert.match(supportPage, /CALENDLY_BOOKING\.implementationRoadmapDeepDiveUrl/);
-  assert.match(supportPage, /Implementation Roadmap Deep Dive/);
-  assert.match(supportPage, /exclusively for business AI consulting/i);
-  assert.doesNotMatch(supportPage, /CALENDLY_BOOKING\.talkThroughAnAiQuestionUrl/);
+  assert.match(supportPage, /Business AI work starts with context/);
+  assert.match(supportPage, /href="\/contact#write"/);
+  assert.match(supportPage, /Implementation Roadmap remains available by fit/);
+  assert.match(supportPage, /scope, timing, deliverable, and price/);
+  assert.doesNotMatch(supportPage, /CALENDLY_BOOKING|CalendlyBookingLink/);
+  assert.doesNotMatch(supportPage, /Book the Deep Dive|complete payment securely/i);
 });
 
 test('carries the existing lead UTM fields into the public booking without forwarding private context', () => {
