@@ -42,5 +42,6 @@ export const FEATURED_ITEMS: FeaturedItem[] = [
     status: 'In development',
     href: 'https://github.com/mroxas04/second-mind',
     cta: 'Explore the project',
+    external: true,
   },
 ];

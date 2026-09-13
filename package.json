@@ -16,7 +16,7 @@
     "test:lead": "node --test tests/contact-attribution.test.mjs tests/sms-consent.test.mjs",
     "test:sms": "node --test tests/twilio-sms.test.mjs",
     "test:voice": "node --test tests/twilio-voice.test.mjs",
-    "test:release": "node --test tests/check-sites-release.test.mjs",
+    "test:release": "node --test tests/check-sites-release.test.mjs tests/site-release-workflow.test.mjs",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

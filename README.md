@@ -119,3 +119,7 @@ The site provides:
 The site is managed by OpenAI Sites through `.openai/hosting.json`. Preserve that file and use the Sites build/deploy workflow. The current intended Sites URL is `https://portfolio.mroxas.chatgpt.site`.
 
 `origin` is the GitHub source repository; `sites` is the Sites source remote.
+
+### Release history
+
+[GitHub Releases](https://github.com/mroxas04/personal-website/releases) are the public ledger of verified production deployments. Record a release only after the exact `main` commit is live and checked. Use the manual **Record site release** workflow and the date-based `site-YYYY.MM.DD.N` tag format described in the [site release playbook](docs/playbooks/site-release.md).
