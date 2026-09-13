@@ -170,6 +170,7 @@ Do not combine private qualitative impact scores with payment amounts in public 
 | Support ledger and testimonial review | D1-backed private dashboard |
 | Product and operational work | GitHub Issues and pull requests |
 | Application code and database schema | This repository |
+| Verified public deployment history | GitHub Releases |
 | Production project binding | `.openai/hosting.json` |
 | Runtime configuration and secrets | Sites environment settings |
 | Analytics detail | Configured analytics provider |
@@ -197,6 +198,7 @@ If actual branch protections differ, update this document to match them.
 6. Confirm the exact `main` commit passed the `Validate site` workflow.
 7. Deploy that exact commit through the Sites release process.
 8. Verify the affected public route and any critical form or webhook behavior.
+9. Record the verified deployment through the `Record site release` GitHub workflow.
 
 ### Definition of done
 
@@ -208,6 +210,7 @@ A change is done when:
 - privacy, accessibility, and mobile behavior have been considered;
 - documentation and configuration references are current;
 - the production deployment is verified when release was in scope; and
+- a GitHub Release records the exact deployed commit when release was in scope; and
 - the related Issue or pull request records the outcome.
 
 ## 9. Security and privacy rules
