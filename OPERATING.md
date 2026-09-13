@@ -30,11 +30,11 @@ The guiding principle is:
 | Offer | Purpose | Format | Price model | Primary outcome |
 | --- | --- | --- | --- | --- |
 | Talk Through an AI Question | Explore a problem, workflow, idea, or concern | 45-minute conversation | Free | Clearer framing and next step |
-| Implementation Roadmap Deep Dive | Turn an organizational AI opportunity into a practical roadmap | 30-minute working session | Current public price in `content/site.ts` | Prioritized implementation direction |
+| Implementation Roadmap | Turn an organizational AI opportunity into a practical roadmap | Separately scoped after initial context | Agreed before paid work begins | Prioritized implementation direction |
 | Writing and public resources | Develop and share ideas about AI, systems, and human judgment | Papers, articles, and blog notes | Free | Trust, learning, and qualified conversations |
 | Optional support | Let someone support useful conversations and independent work | Financial support, referral, or feedback | Pay what fits | Sustainability and evidence of value |
 
-Prices, durations, booking URLs, and public contact channels are configured in `content/site.ts`. That file is the source of truth for what the website currently promises.
+Public booking URLs, published durations, payment identifiers, and contact channels are configured in `content/site.ts`. Organizational paid work is qualified first and scoped privately; an inactive external booking page is not a current public offer.
 
 ## 3. Near-term operating priorities
 
@@ -60,7 +60,7 @@ A visitor may:
 - call or text the published business number;
 - submit the contact form;
 - read or share published work; or
-- book the paid Implementation Roadmap Deep Dive.
+- send context about an organizational AI opportunity.
 
 UTM values must use stable campaign labels and must never contain names, email addresses, or other personal information.
 
@@ -91,7 +91,7 @@ During the conversation:
 - identify human judgment that should remain explicit;
 - finish with a practical next step.
 
-For a paid roadmap session, capture a concise deliverable covering:
+For a separately scoped roadmap engagement, capture a concise deliverable covering:
 
 - opportunity and desired outcome;
 - users and decision owners;
@@ -174,7 +174,7 @@ Do not combine private qualitative impact scores with payment amounts in public 
 | Production project binding | `.openai/hosting.json` |
 | Runtime configuration and secrets | Sites environment settings |
 | Analytics detail | Configured analytics provider |
-| Scheduling and paid booking records | Calendly |
+| Scheduling records | Calendly |
 | Payment and accounting records | Private accounting system or payment-provider records |
 
 Never use a public repository file, GitHub Issue, pull request, commit message, test fixture, screenshot, or task description as storage for secrets or private customer data.
@@ -240,7 +240,7 @@ Record decisions that change positioning, pricing, audience, data handling, deli
 
 | Date | Decision | Reason | Owner | Revisit when |
 | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | Example: standardize the roadmap deliverable | Make paid sessions consistent and easier to improve | Matthew | After five completed sessions |
+| 2026-09-13 | Qualify roadmap work through an initial conversation instead of a public self-serve booking | Duration, deliverable, and sustainable price need evidence before promotion | Matthew | After five substantive AI conversations |
 
 ## 12. Next operating-system improvements
 

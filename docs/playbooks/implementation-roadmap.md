@@ -6,6 +6,12 @@ Turn one concrete organizational AI opportunity into a decision-ready starting r
 
 Use the copy-ready [`implementation-roadmap.md`](../templates/implementation-roadmap.md) for the client deliverable. The fictional [`example-implementation-roadmap.md`](../templates/example-implementation-roadmap.md) shows the intended level of specificity without using customer information.
 
+## Entry and commercial status
+
+During the current validation phase, this is not a self-serve public booking. Offer roadmap work only after enough initial context exists to judge fit. Agree on the scope, session duration, written deliverable, timing, and price before scheduling or accepting payment.
+
+The free **Talk Through an AI Question** conversation may reveal a roadmap need, but it should not become a pressured sales step. A written organizational inquiry may also provide the initial context.
+
 ## Required intake
 
 Collect only what is needed to prepare:
@@ -19,12 +25,14 @@ Collect only what is needed to prepare:
 
 If the opportunity cannot be discussed safely without confidential material, agree on a sanitized description before the session.
 
-## Suggested 30-minute shape
+## Suggested session shape
 
-- **5 minutes — Outcome and scope**
-- **10 minutes — Current workflow, people, and data**
-- **10 minutes — Pilot, dependencies, and risks**
-- **5 minutes — Decision, owner, and next checkpoint**
+Set the duration when the engagement is scoped. Preserve these four parts:
+
+- **Outcome and scope**
+- **Current workflow, people, and data**
+- **Pilot, dependencies, and risks**
+- **Decision, owner, and next checkpoint**
 
 ## Minimum deliverable
 
