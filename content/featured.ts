@@ -39,7 +39,8 @@ export const FEATURED_ITEMS: FeaturedItem[] = [
     description:
       'A private, local-first system that turns journals and dated media into a grounded record of memory, identity, and change.',
     status: 'In development',
-    href: '/work',
+    href: 'https://github.com/mroxas04/second-mind',
     cta: 'Explore the project',
+    external: true,
   },
 ];
