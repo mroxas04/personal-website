@@ -142,14 +142,11 @@ export const SUPPORT_PAYMENT: {
   zelleDisplayName: null,
 };
 
-/** Public booking links. Keep the primary conversation separate from paid support. */
+/** Public booking links. Keep the free AI-question conversation as the primary path. */
 export const CALENDLY_BOOKING = {
   talkThroughAnAiQuestionUrl: 'https://calendly.com/matthewgroxas/talk-through-an-ai-question',
   talkThroughAnAiQuestionDurationMinutes: 45,
   coffeeChatUrl: 'https://calendly.com/matthewgroxas/coffee-chat-1',
-  implementationRoadmapDeepDiveUrl: 'https://calendly.com/matthewgroxas/30min',
-  implementationRoadmapDurationMinutes: 30,
-  implementationRoadmapPriceUsd: 30,
 } as const;
 
 /**
