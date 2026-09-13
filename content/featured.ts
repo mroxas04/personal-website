@@ -30,8 +30,9 @@ export const FEATURED_ITEMS: FeaturedItem[] = [
     description:
       'An inquiry into embodiment, history, possibility, and what it would mean for an artificial system to have a meaningful world.',
     status: 'Philosophy of AI · In progress',
-    href: '/writing/papers',
+    href: 'https://docs.google.com/document/d/1D0h71GGJhiPjnGyw8SA7FIU4Hv6eFu5xY7Kak6Ik5Fs/edit?usp=sharing',
     cta: 'See the research',
+    external: true,
   },
   {
     type: 'Personal AI system',
@@ -39,7 +40,8 @@ export const FEATURED_ITEMS: FeaturedItem[] = [
     description:
       'A private, local-first system that turns journals and dated media into a grounded record of memory, identity, and change.',
     status: 'In development',
-    href: '/work',
+    href: 'https://github.com/mroxas04/second-mind',
     cta: 'Explore the project',
+    external: true,
   },
 ];

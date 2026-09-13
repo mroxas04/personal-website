@@ -1,17 +1,26 @@
-## Summary
+## Outcome
 
-<!-- What changed and why? -->
+What user or business outcome does this change produce?
 
-## Release target
+## What changed
 
-- [ ] This targets `dev` for review and integration.
-- [ ] This targets `main` as an approved production release.
+- 
 
-## Validation
+## Verification
 
-- [ ] `npm run lint`
-- [ ] `npm run build`
+- [ ] Acceptance criteria are satisfied.
+- [ ] Relevant tests pass.
+- [ ] Lint and build pass when application source changed.
+- [ ] The affected route or workflow was checked.
 
-## Production note
+## Operational review
 
-Merging to `main` makes that exact commit eligible for a Sites release. GitHub Actions validates it but does not hold Sites credentials or deploy it; a Sites-capable Codex session performs and verifies the publish.
+- [ ] No secrets, private conversations, customer data, or payment credentials were added.
+- [ ] Authentication, privacy, and data-retention effects were considered.
+- [ ] Public claims, prices, contact details, and links are accurate.
+- [ ] Mobile and accessibility effects were considered.
+- [ ] Documentation, migrations, environment-key references, and rollback steps are current where applicable.
+
+## Release and rollback
+
+State whether deployment is in scope, how the released change will be verified, and the safest rollback path.
