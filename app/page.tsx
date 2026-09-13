@@ -76,8 +76,7 @@ export default async function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       {publicPhone ? (
         <HomeContactPrompt
-          aiQuestionBookingUrl={CALENDLY_BOOKING.talkThroughAnAiQuestionUrl}
-          coffeeChatBookingUrl={CALENDLY_BOOKING.coffeeChatUrl}
+          bookingUrl={CALENDLY_BOOKING.talkThroughAnAiQuestionUrl}
           phone={publicPhone}
         />
       ) : null}
