@@ -1,0 +1,170 @@
+name: Record site release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Date-based version in YYYY.MM.DD.N format
+        required: true
+        type: string
+      title:
+        description: Public release title
+        required: true
+        type: string
+      summary:
+        description: Brief public summary of the verified deployment
+        required: true
+        type: string
+      deployed_url:
+        description: Verified production URL
+        required: true
+        default: https://portfolio.mroxas.chatgpt.site
+        type: string
+      deployment_verified:
+        description: I verified this exact main revision in production
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  checks: read
+  contents: write
+
+concurrency:
+  group: record-site-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish deployment record
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Create verified release
+        uses: actions/github-script@v7
+        env:
+          DEPLOYED_URL: ${{ inputs.deployed_url }}
+          DEPLOYMENT_VERIFIED: ${{ inputs.deployment_verified }}
+          RELEASE_SUMMARY: ${{ inputs.summary }}
+          RELEASE_TITLE: ${{ inputs.title }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const version = process.env.RELEASE_VERSION?.trim() ?? '';
+            const title = process.env.RELEASE_TITLE?.trim() ?? '';
+            const summary = process.env.RELEASE_SUMMARY?.trim() ?? '';
+            const deployedUrl = process.env.DEPLOYED_URL?.trim() ?? '';
+
+            if (context.ref !== 'refs/heads/main') {
+              core.setFailed('Run this workflow from the main branch.');
+              return;
+            }
+
+            if (process.env.DEPLOYMENT_VERIFIED !== 'true') {
+              core.setFailed('Confirm the exact revision is live before recording a release.');
+              return;
+            }
+
+            const versionMatch = version.match(/^(\d{4})\.(\d{2})\.(\d{2})\.([1-9]\d*)$/);
+            if (!versionMatch) {
+              core.setFailed('Version must use YYYY.MM.DD.N, for example 2026.09.13.1.');
+              return;
+            }
+
+            const [, year, month, day] = versionMatch;
+            const releaseDate = new Date(`${year}-${month}-${day}T00:00:00Z`);
+            if (
+              Number.isNaN(releaseDate.valueOf()) ||
+              releaseDate.getUTCFullYear() !== Number(year) ||
+              releaseDate.getUTCMonth() + 1 !== Number(month) ||
+              releaseDate.getUTCDate() !== Number(day)
+            ) {
+              core.setFailed('Version contains an invalid calendar date.');
+              return;
+            }
+
+            if (!title || !summary) {
+              core.setFailed('A public title and summary are required.');
+              return;
+            }
+
+            let parsedUrl;
+            try {
+              parsedUrl = new URL(deployedUrl);
+            } catch {
+              core.setFailed('Deployment URL must be a valid HTTPS URL.');
+              return;
+            }
+
+            if (parsedUrl.protocol !== 'https:') {
+              core.setFailed('Deployment URL must use HTTPS.');
+              return;
+            }
+
+            const { data: main } = await github.rest.repos.getBranch({
+              owner,
+              repo,
+              branch: 'main',
+            });
+
+            if (main.commit.sha !== context.sha) {
+              core.setFailed('The selected workflow revision is not the current main commit.');
+              return;
+            }
+
+            const { data: checks } = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref: context.sha,
+              per_page: 100,
+            });
+            const requiredChecks = ['Lint and build', 'Mark production release candidate'];
+            const unsuccessful = requiredChecks.filter((name) =>
+              !checks.check_runs.some(
+                (check) => check.name === name && check.conclusion === 'success',
+              ),
+            );
+
+            if (unsuccessful.length) {
+              core.setFailed(`Required successful checks are missing: ${unsuccessful.join(', ')}`);
+              return;
+            }
+
+            const tag = `site-${version}`;
+            try {
+              await github.rest.repos.getReleaseByTag({ owner, repo, tag });
+              core.setFailed(`Release ${tag} already exists.`);
+              return;
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+
+            const commitUrl = `https://github.com/${owner}/${repo}/commit/${context.sha}`;
+            const body = [
+              summary,
+              '',
+              '## Deployment',
+              '',
+              `- Live site: ${parsedUrl.toString()}`,
+              `- Source revision: [${context.sha.slice(0, 12)}](${commitUrl})`,
+              '- Status: verified in production',
+            ].join('\n');
+
+            const { data: release } = await github.rest.repos.createRelease({
+              owner,
+              repo,
+              tag_name: tag,
+              target_commitish: context.sha,
+              name: title,
+              body,
+              draft: false,
+              prerelease: false,
+              generate_release_notes: true,
+            });
+
+            core.summary
+              .addHeading('Site release recorded')
+              .addLink(release.name, release.html_url)
+              .addRaw(`\nTag: ${tag}`)
+              .write();

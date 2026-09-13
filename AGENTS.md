@@ -19,6 +19,7 @@ This is Matthew Roxas’s personal editorial portfolio. Preserve its visual lang
 - Before any Sites save or deploy, switch to `main`, fast-forward from `origin/main`, run `npm run release:check`, `npm run lint`, `npm run test:release`, and `npm run build`, then run `npm run release:check` again to close the validation time window.
 - Run `npm run release:ci-check` and require a successful GitHub `push` validation for the exact `main` commit before obtaining Sites source credentials or starting any Sites mutation.
 - After those checks pass, use the Sites hosting workflow to push the source, save a version, deploy that same version, and poll until deployment succeeds.
+- After the live deployment is verified, record it through the `Record site release` GitHub workflow. Never create a release for a preview, failed deployment, or merge that has not reached production.
 - Never store Sites source credentials or short-lived tokens in GitHub Actions, repository secrets, committed files, shell history, or documentation.
 
 ## Content architecture

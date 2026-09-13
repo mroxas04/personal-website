@@ -10,6 +10,7 @@ These playbooks turn [`OPERATING.md`](../../OPERATING.md) into repeatable action
 | [Publishing](publishing.md) | Releasing writing, media, testimonials, or material offer changes |
 | [Incident response](incident-response.md) | The site, dashboard, database, authentication, or webhook behavior fails |
 | [Conversation learning](conversation-learning.md) | Converting private post-call reflections into aggregate business evidence |
+| [Site release record](site-release.md) | Recording a verified production deployment in the public release ledger |
 
 Improve a playbook when real work reveals a missing step. Avoid adding process for hypothetical cases.
 
